@@ -43,5 +43,7 @@
 
 	<mybatis-spring:scan base-package="com.wj.mapper" />
 	<context:component-scan
+		base-package="com.wj.service" />
+	<context:component-scan
 		base-package="com.wj.sample" />
 </beans>
