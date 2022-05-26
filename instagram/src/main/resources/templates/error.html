@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Art Place | Error</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/css/index.css}" rel="stylesheet">
+</head>
+<body>
+<header class="border border-bottom">
+  <div class="container">
+    <h1>Art Place</h1>
+
+  </div>
+</header>
+<article class="border ">
+  <div class="container">
+    <h1 th:text="${status}"></h1>
+    <h2 th:text="${message}"></h2>
+  </div>
+</article>
+</body>
+</html>

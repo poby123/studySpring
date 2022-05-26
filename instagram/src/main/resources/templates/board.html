@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Art Place</title>
+  <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+  <link th:href="@{/css/index.css}" rel="stylesheet">
+</head>
+
+<body>
+  <header class="border border-bottom">
+    <div class="container">
+      <h1>Art Place</h1>
+
+    </div>
+  </header>
+  <article>
+    <div class="container">
+      <div class="board-container">
+        <div th:each="image : ${board.images}" class="image-container">
+          <img th:src="${image?.fullFilePath}" class="board-image" />
+        </div>
+        <span th:text="${board?.title}" class="board-title"></span>
+        <span th:text="${board?.content}" class="board-content"></span>
+        <span th:text="${board?.writer?.username}" class="board-writer"></span>
+      </div>
+      </div>
+  </article>
+</body>
+
+</html>

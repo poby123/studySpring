@@ -1,0 +1,41 @@
+header div{
+    border: 1px solid pink;
+}
+
+article{
+    border: 1px solid red;
+}
+
+.articleA{
+    justify-content: center;
+    border: 1px solid blue;
+    min-height: 450px;
+    height: 100vh;
+}
+
+.articleA .container{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.articleA .board-container{
+    border: 1px solid black;
+    margin: 1rem;
+    flex: 1;
+    max-width: 280px;
+    min-width: 280px;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.image-container .board-image{
+    width: 100%;
+}
+
+@media(max-width: 768px){
+    .articleA .board-container{
+        max-width: 80vw;
+        min-width: 80vw;
+    }
+}
