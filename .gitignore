@@ -1,1 +1,9 @@
 *.yml
+*.jar
+*.properties
+
+HELP.md
+.gradle
+*/gradle/*
+*/build/*
+.vscode

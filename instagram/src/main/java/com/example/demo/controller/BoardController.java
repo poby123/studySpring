@@ -1,10 +1,9 @@
 package com.example.demo.controller;
 
-import java.io.IOException;
 import java.util.List;
 
-import com.example.demo.dto.BoardDto.BoardViewDto;
 import com.example.demo.dto.BoardDto.BoardSaveDto;
+import com.example.demo.dto.BoardDto.BoardViewDto;
 import com.example.demo.entity.Member;
 import com.example.demo.repository.MemberRepository;
 import com.example.demo.service.BoardService;
@@ -41,6 +40,14 @@ public class BoardController {
         return "board";
     }
 
+    @GetMapping("/like/{boardId}")
+    public String boardLike(@PathVariable(name = "boardId") Long id, Model model){
+        Member member = memberRepository.findByUsername("poby123").get();
+        boardService.likeBoard(member, id);
+
+        return "redirect:/";
+    }
+
     @GetMapping("/delete/{boardId}")
     public String deleteBoard(@PathVariable(name = "boardId") Long id) {
         boardService.remove(id);
@@ -50,7 +57,7 @@ public class BoardController {
 
     @PostMapping("/upload")
     public String upload(@ModelAttribute BoardSaveDto dto) {
-        Member member = memberRepository.findByUsername("하이디").get();
+        Member member = memberRepository.findByUsername("poby123").get();
         boardService.save(member, dto);
 
         return "redirect:/";

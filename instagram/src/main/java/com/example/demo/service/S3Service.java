@@ -18,7 +18,6 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.example.demo.entity.BoardImage;
 import com.example.demo.exception.BusinessException;
 import com.example.demo.exception.ErrorCode;
 

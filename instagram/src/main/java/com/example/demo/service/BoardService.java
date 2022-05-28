@@ -10,6 +10,7 @@ import com.example.demo.entity.BoardImage;
 import com.example.demo.entity.BoardLike;
 import com.example.demo.entity.Member;
 import com.example.demo.exception.types.BoardNotFoundException;
+import com.example.demo.repository.BoardLikeRepository;
 import com.example.demo.repository.BoardRepository;
 
 import org.springframework.stereotype.Service;
@@ -23,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 public class BoardService {
 
     private final BoardRepository boardRepository;
+    private final BoardLikeRepository boardLikeRepository;
     private final S3Service s3Service;
 
     @Transactional
@@ -30,12 +32,13 @@ public class BoardService {
         Board board = new Board(member, dto.getTitle(), dto.getContent());
 
         List<String> urls = s3Service.upload(dto.getFiles());
-        board.getImages().addAll(urls.stream().map(BoardImage::new).collect(Collectors.toUnmodifiableList()));
+        for (String url : urls) {
+            board.getImages().add(new BoardImage(url, board));
+        }
 
         board = boardRepository.save(board);
         return board.getId();
     }
-
 
     @Transactional
     public void remove(Long id) {
@@ -43,27 +46,33 @@ public class BoardService {
 
         board.getImages().forEach(image -> s3Service.remove(image.getUrl()));
 
-        // boardImage가 orphanRemoval = true, cascade = CascadeType.ALL 이렇게 되어있어서 따로 처리해줄 필요가 없다.
+        // boardImage가 orphanRemoval = true, cascade = CascadeType.ALL 이렇게 되어있어서 따로 처리해줄
+        // 필요가 없다.
         boardRepository.delete(board);
     }
-
 
     public BoardViewDto findOne(Long id) {
         Board board = boardRepository.findById(id).orElseThrow(BoardNotFoundException::new);
         return BoardViewDto.of(board);
     }
 
-
-    public List<BoardViewDto> findAll(){
+    public List<BoardViewDto> findAll() {
         List<Board> boards = boardRepository.findAll();
         List<BoardViewDto> ret = boards.stream().map(BoardViewDto::of).collect(Collectors.toUnmodifiableList());
 
         return ret;
     }
 
+    @Transactional
+    public void likeBoard(Member member, Long boardId) {
+        Board board = boardRepository.findById(boardId).orElseThrow(BoardNotFoundException::new);
+        List<BoardLike> like = boardLikeRepository.findByMemberAndBoard(member, board);
 
-    public void likeBoard(Member member, Long boardId){
-        Board target = boardRepository.findById(boardId).orElseThrow(BoardNotFoundException::new);
-        BoardLike.doLike(member, target);
+        if(like.isEmpty()){
+            BoardLike.doLike(member, board);
+        }
+        else{
+            BoardLike.undoLike(like.get(0));
+        }
     }
 }

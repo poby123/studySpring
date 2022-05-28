@@ -20,10 +20,12 @@ public class MemberDto {
     @NoArgsConstructor
     public static class MemberBoardViewDto {
         private String username;
+        private String image;
 
         public static MemberBoardViewDto of(Member member) {
             MemberBoardViewDto ret = new MemberBoardViewDto();
             ret.setUsername(member.getUsername());
+            ret.setImage(member.getImage());
 
             return ret;
         }

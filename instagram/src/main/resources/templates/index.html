@@ -37,6 +37,8 @@
         <span th:text="${board?.title}" class="board-title"></span>
         <span th:text="${board?.content}" class="board-content"></span>
         <span th:text="${board?.writer?.username}" class="board-writer"></span>
+        <span th:text="|id: ${board?.id}|" class="board-likes"></span>
+        <span th:text="|좋아요 ${board?.likes?.size()}개|" class="board-likes"></span>
       </div>
     </div>
   </article>

@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import javax.validation.constraints.NotBlank;
 
 import com.example.demo.dto.BoardImageDto.BoardImageViewDto;
+import com.example.demo.dto.BoardLikeDto.BoardLikeForBoardDto;
 import com.example.demo.dto.MemberDto.MemberBoardViewDto;
 import com.example.demo.entity.Board;
 
@@ -37,6 +38,7 @@ public class BoardDto {
         private String content;
         private MemberBoardViewDto writer;
         private List<BoardImageViewDto> images;
+        private List<BoardLikeForBoardDto> likes;
 
         public static BoardViewDto of(Board board) {
             BoardViewDto ret = new BoardViewDto();
@@ -48,6 +50,10 @@ public class BoardDto {
             List<BoardImageViewDto> images = board.getImages().stream().map(BoardImageViewDto::of)
                     .collect(Collectors.toUnmodifiableList());
             ret.setImages(images);
+
+            List<BoardLikeForBoardDto> likes = board.getLikes().stream().map(BoardLikeForBoardDto::of).collect(Collectors.toUnmodifiableList());
+            ret.setLikes(likes);
+
 
             return ret;
         }

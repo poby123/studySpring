@@ -15,7 +15,6 @@ import com.example.demo.repository.BoardRepository;
 import com.example.demo.repository.MemberRepository;
 import com.example.demo.service.BoardService;
 
-import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
