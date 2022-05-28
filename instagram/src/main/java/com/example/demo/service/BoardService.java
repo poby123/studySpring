@@ -40,6 +40,7 @@ public class BoardService {
         return board.getId();
     }
 
+
     @Transactional
     public void remove(Long id) {
         Board board = boardRepository.findById(id).orElseThrow(BoardNotFoundException::new);
@@ -51,10 +52,12 @@ public class BoardService {
         boardRepository.delete(board);
     }
 
+
     public BoardViewDto findOne(Long id) {
         Board board = boardRepository.findById(id).orElseThrow(BoardNotFoundException::new);
         return BoardViewDto.of(board);
     }
+
 
     public List<BoardViewDto> findAll() {
         List<Board> boards = boardRepository.findAll();
@@ -63,6 +66,7 @@ public class BoardService {
         return ret;
     }
 
+    
     @Transactional
     public void likeBoard(Member member, Long boardId) {
         Board board = boardRepository.findById(boardId).orElseThrow(BoardNotFoundException::new);

@@ -9,6 +9,9 @@ gradle/*
 ### Sensitive file ###
 src/main/resources/application.yml
 
+### Querydsl file ###
+src/main/generated/*
+
 ### STS ###
 .apt_generated
 .classpath
