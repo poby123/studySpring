@@ -26,6 +26,7 @@ public class BoardDto {
         private String title;
         
         private String content;
+        
         private List<MultipartFile> files;
     }
 

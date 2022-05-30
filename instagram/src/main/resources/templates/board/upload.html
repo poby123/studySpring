@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Art Place</title>
+  <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+  <link th:href="@{/css/index.css}" rel="stylesheet">
+</head>
+
+<body>
+  <header class="border border-bottom">
+    <div class="container">
+      <h1>Art Place | Upload</h1>
+
+    </div>
+  </header>
+  <article class="border ">
+    <div class="container">
+      <form method="post" th:action="@{/upload}" enctype="multipart/form-data" th:object="${board}">
+        <input type="file" name="files" multiple="multiple" th:field="*{files}"/>
+        <input type="text" name="title" placeholder="제목" th:field="*{title}"/>
+        <input type="text" name="content" placeholder="내용" th:field="*{content}"/>
+        <input type="submit" value="submit" />
+      </form>
+    </div>
+  </article>
+  <div th:each="error : ${errors}">
+    <span th:text="${error}"></span>
+  </div>
+</body>
+
+</html>

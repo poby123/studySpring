@@ -9,7 +9,6 @@ import javax.validation.constraints.NotBlank;
 
 import com.example.demo.dto.BoardDto.BoardViewDto;
 import com.example.demo.dto.MemberFollowDto.FollowerDto;
-import com.example.demo.dto.MemberFollowDto.FollowingDto;
 import com.example.demo.entity.Member;
 import com.example.demo.entity.Role;
 
@@ -37,7 +36,7 @@ public class MemberDto {
 
         private List<BoardViewDto> boards = new ArrayList<>();
         private List<MemberBoardViewDto> followers = new ArrayList<>();
-        private List<MemberBoardViewDto> followings = new ArrayList<>();
+        // private List<MemberBoardViewDto> followings = new ArrayList<>();
 
         @Builder
         public MemberProfileViewDto(String username, String name, String email, String image, String job, String about){
@@ -61,7 +60,7 @@ public class MemberDto {
 
             ret.boards = member.getBoards().stream().map(BoardViewDto::of).collect(Collectors.toUnmodifiableList());
             ret.followers = member.getFollowers().stream().map(FollowerDto::new).map(dto -> dto.getMember()).collect(Collectors.toUnmodifiableList());
-            ret.followings = member.getFollowings().stream().map(FollowingDto::new).map(dto -> dto.getMember()).collect(Collectors.toUnmodifiableList());
+            // ret.followings = member.getFollowings().stream().map(FollowingDto::new).map(dto -> dto.getMember()).collect(Collectors.toUnmodifiableList());
 
             return ret;
         }

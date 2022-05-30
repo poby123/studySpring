@@ -42,4 +42,13 @@ public class MemberFollow {
         return follow;
     }
 
+    public static MemberFollow unFollow(MemberFollow follow) {
+        // MemberFollow follow = new MemberFollow(from, to);
+
+        follow.getMember().getFollowings().remove(follow);
+        follow.getFollow().getFollowers().remove(follow);
+
+        return follow;
+    }
+
 }

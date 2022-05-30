@@ -1,6 +1,9 @@
 package com.example.demo.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.validation.Valid;
 
 import com.example.demo.dto.BoardDto.BoardSaveDto;
 import com.example.demo.dto.BoardDto.BoardViewDto;
@@ -10,8 +13,8 @@ import com.example.demo.service.BoardService;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,10 +37,31 @@ public class BoardController {
         return "index";
     }
 
+    @GetMapping("/upload")
+    public String uploadForm(Model model) {
+        model.addAttribute("board", new BoardSaveDto());
+        return "board/upload";
+    }
+
+    @PostMapping("/upload")
+    public String upload(@Valid BoardSaveDto dto, Errors errors, Model model) {
+        if(errors.hasErrors()){
+            List<String> errorMessages = errors.getAllErrors().stream().map(e -> e.getDefaultMessage()).collect(Collectors.toUnmodifiableList());
+            model.addAttribute("errors", errorMessages);
+            model.addAttribute("board", new BoardSaveDto());
+            return "board/upload";
+        }
+
+        Member member = memberRepository.findByUsername("poby123").get();
+        boardService.save(member, dto);
+
+        return "redirect:/";
+    }
+
     @GetMapping("/{boardId}")
     public String getBoard(@PathVariable(name = "boardId") Long id, Model model) {
         model.addAttribute("board", boardService.findOne(id));
-        return "board";
+        return "board/board";
     }
 
     @GetMapping("/like/{boardId}")
@@ -55,12 +79,5 @@ public class BoardController {
         return "redirect:/";
     }
 
-    @PostMapping("/upload")
-    public String upload(@ModelAttribute BoardSaveDto dto) {
-        Member member = memberRepository.findByUsername("poby123").get();
-        boardService.save(member, dto);
-
-        return "redirect:/";
-    }
 
 }

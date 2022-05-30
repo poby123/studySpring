@@ -12,19 +12,11 @@
   <header class="border border-bottom">
     <div class="container">
       <h1>Art Place</h1>
-
+      <a href="/signup">회원가입</a>
+      <a href="/login">로그인</a>
+      <a href="/upload">글쓰기</a>
     </div>
   </header>
-  <article class="border ">
-    <div class="container">
-      <form method="post" th:action="@{/upload}" enctype="multipart/form-data">
-        <input type="file" name="files" multiple="multiple"/>
-        <input type="text" name="title" placeholder="제목"/>
-        <input type="text" name="content" placeholder="내용"/>
-        <input type="submit" value="submit" />
-      </form>
-    </div>
-  </article>
   <article class="articleA">
     <div class="container">
       <div th:each="board: ${boards}" class="board-container">

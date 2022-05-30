@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.example.demo.dto.MemberDto.MemberProfileViewDto;
@@ -11,6 +12,7 @@ import com.example.demo.exception.types.UsernameDuplicateException;
 import com.example.demo.repository.MemberFollowRepository;
 import com.example.demo.repository.MemberRepository;
 
+import org.hibernate.annotations.BatchSize;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -49,9 +51,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public void follow(Member from, String username){
 
         Member to = memberRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 사용자입니다."));
-
-        if(memberFollowRepository.findByMemberAndFollow(from, to).size() == 0){
+        List<MemberFollow> follows = memberFollowRepository.findByMemberAndFollow(from, to);
+        
+        if(follows.size() == 0){
             MemberFollow.doFollow(from, to);
+        }
+        else{
+            MemberFollow.unFollow(follows.get(0));
         }
     }
 
@@ -61,6 +67,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     @Transactional
+    @BatchSize(size = 200)
     public MemberProfileViewDto getMemeberToProfileViewDto(String username){
         Member member = memberRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 사용자입니다."));
         return MemberProfileViewDto.of(member);

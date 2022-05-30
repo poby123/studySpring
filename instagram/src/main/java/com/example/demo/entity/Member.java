@@ -76,11 +76,7 @@ public class Member {
     }
 
     /* 연관관계 메서드 */
-    // public void doFollow(Member to){
-    //     MemberFollow follow = new MemberFollow(this, to);
-    //     this.followings.add(follow);
-    //     to.followers.add(follow);
-    // }
+
 
     /* setter */
     public void setPassword(String password) {

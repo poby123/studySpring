@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Art Place | Profile</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+</head>
+<body>
+
+<div class="container">
+    <div class="my-4">
+        <h2>Profile</h2>
+    </div>
+    <div th:object="${member}">
+        <div class="mb-3">
+            <span id="id" th:text="${member.username}">
+        </div>
+        <div class="mb-3">
+            <span id="id" th:text="${member.name}">
+        </div>
+        <div class="mb-3">
+            <span id="id" th:text="${member.image}">
+        </div>
+        <div class="mb-3">
+            <span id="id" th:text="${member.job}">
+        </div>
+        <div class="mb-3">
+            <span id="id" th:text="${member.about}">
+        </div>
+        <div class="mb-3">
+            팔로워: 
+            <span id="id" th:text="${member.followers.size}">
+        </div>
+
+        <div th:each="board : ${member.boards}">
+            <div th:each="image : ${board.images}" class="image-container">
+                <img th:src="${image?.fullFilePath}" class="board-image" />
+              </div>
+              
+              <span th:text="${board?.title}" class="board-title"></span>
+              <span th:text="${board?.content}" class="board-content"></span>
+              <span th:text="${board?.writer?.username}" class="board-writer"></span>
+              <span th:text="|id: ${board?.id}|" class="board-likes"></span>
+              <span th:text="|좋아요 ${board?.likes?.size()}개|" class="board-likes"></span>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>
