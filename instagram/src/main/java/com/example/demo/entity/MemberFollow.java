@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import lombok.AccessLevel;
@@ -20,9 +21,11 @@ public class MemberFollow {
     Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
     Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "follow_id")
     Member follow;
 
     private MemberFollow(Member from, Member to) {

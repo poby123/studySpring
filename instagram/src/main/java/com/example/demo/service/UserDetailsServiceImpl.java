@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import java.util.Optional;
 
+import com.example.demo.dto.MemberDto.MemberProfileViewDto;
 import com.example.demo.dto.MemberDto.SignupRequest;
 import com.example.demo.entity.Member;
 import com.example.demo.entity.MemberFollow;
@@ -57,6 +58,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     public Optional<Member> getMember(String username){
         return memberRepository.findByUsername(username);
+    }
+
+    @Transactional
+    public MemberProfileViewDto getMemeberToProfileViewDto(String username){
+        Member member = memberRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 사용자입니다."));
+        return MemberProfileViewDto.of(member);
     }
 
     @Override

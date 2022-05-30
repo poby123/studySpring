@@ -11,6 +11,7 @@ import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -32,10 +33,12 @@ public class Board {
 
     @Id
     @GeneratedValue
+    @Column(name = "board_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Member writer;
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @Column(nullable = false)
     String title;
@@ -58,17 +61,26 @@ public class Board {
     @LastModifiedDate
     private LocalDateTime modifiedDateTime;
 
+    
+    // == 연관관계 메서드 ==
+    public void setMember(Member member){
+        this.member = member;
+        member.getBoards().add(this);
+    }
+    
+    public void addImage(BoardImage image){
+        this.images.add(image);
+        image.setBoard(this);
+    }
+    
+    // == 생성 메서드 ==
     @Builder
-    public Board(Member writer, String title, String content) {
-        this.writer = writer;
+    private Board(Member writer, String title, String content) {
+        setMember(writer);
         this.title = title;
         this.content = content;
     }
 
-    // == 연관관계 메서드 ==
-
-    
-    // == 생성 메서드 ==
     public static Board createBoard(Member member, String title, String content, List<BoardImage> images) {
         Board ret = new Board(member, title, content);
 
@@ -80,15 +92,11 @@ public class Board {
     }
 
 
-    public void addImage(BoardImage image){
-        this.images.add(image);
-        image.setBoard(this);
-    }
 
     @Override
     public String toString(){
         StringBuffer sb = new StringBuffer();
-        sb.append("writer : " + writer.getUsername() + "\n");
+        sb.append("writer : " + member.getUsername() + "\n");
         sb.append("content : " + content + "\n");
 
         for(BoardImage image: images){

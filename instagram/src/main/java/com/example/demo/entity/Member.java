@@ -23,6 +23,7 @@ public class Member {
 
     @Id
     @GeneratedValue
+    @Column(name = "member_id")
     private Long id;
 
     @Column(unique = true, nullable = false, length = 20)
@@ -34,20 +35,21 @@ public class Member {
     @Column(nullable = false)
     private String password;
 
-    private boolean enabled;
-
+    @Column(nullable = false)
+    private String email;
+    
     private String image;
 
-    private String job;
+    private boolean enabled;
 
-    private String email;
+    private String job;
 
     private String about;
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToMany(mappedBy = "writer")
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Board> boards = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -60,7 +62,7 @@ public class Member {
     private List<MemberFollow> followings = new ArrayList<>();
 
     @Builder
-    public Member(String username, String name, String password, boolean enabled, String email) {
+    public Member(String username, String name, String password, String email) {
         this.username = username;
         this.name = name;
         this.password = password;

@@ -65,7 +65,7 @@ public class BoardServiceTest {
         board = boardRepository.findById(board.getId()).get();
 
         assertEquals(content, board.getContent());
-        assertEquals(writer, board.getWriter().getUsername());
+        assertEquals(writer, board.getMember().getUsername());
         assertEquals("img1", board.getImages().get(0).getUrl());
         assertEquals("img2", board.getImages().get(1).getUrl());
         assertEquals("img3", board.getImages().get(2).getUrl());

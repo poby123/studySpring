@@ -30,7 +30,7 @@ public class BoardRepositoryImpl implements CustomBoardRepository{
 
     @Override
     public BoardViewDto findBoardViewDtoById(Long id) {
-        BoardViewDto ret = query.select(Projections.bean(BoardViewDto.class, board.id, board.title, board.content, board.writer))
+        BoardViewDto ret = query.select(Projections.bean(BoardViewDto.class, board.id, board.title, board.content, board.member))
                                 .where(board.id.eq(id))
                                 .from(board)
                                 .leftJoin(member)

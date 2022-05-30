@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,11 +30,11 @@ public class BoardService {
 
     @Transactional
     public Long save(Member member, BoardSaveDto dto) {
-        Board board = new Board(member, dto.getTitle(), dto.getContent());
+        Board board = Board.createBoard(member, dto.getTitle(), dto.getContent(), new ArrayList<>());
 
-        List<String> urls = s3Service.upload(dto.getFiles());
-        for (String url : urls) {
-            board.getImages().add(new BoardImage(url, board));
+        List<BoardImage> images = s3Service.upload(dto.getFiles()).stream().map(BoardImage::new).collect(Collectors.toList());
+        for(BoardImage image : images){
+            board.addImage(image);
         }
 
         board = boardRepository.save(board);

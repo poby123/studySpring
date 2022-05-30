@@ -10,11 +10,21 @@ public class MemberFollowDto {
     
     @Data
     @NoArgsConstructor
-    public static class DefaultMemberFollowDto{
+    public static class FollowerDto{
         private MemberBoardViewDto member;
 
-        DefaultMemberFollowDto(MemberFollow follow){
-            this.member = MemberBoardViewDto.of(follow);
+        FollowerDto(MemberFollow follow){
+            this.member = MemberBoardViewDto.of(follow.getMember());
+        }
+    }
+
+    @Data
+    @NoArgsConstructor
+    public static class FollowingDto{
+        private MemberBoardViewDto member;
+
+        FollowingDto(MemberFollow follow){
+            this.member = MemberBoardViewDto.of(follow.getFollow());
         }
     }
 }

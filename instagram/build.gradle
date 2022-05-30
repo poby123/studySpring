@@ -83,8 +83,8 @@ sourceSets {
 compileQuerydsl{
     options.annotationProcessorPath = configurations.querydsl
 	// if(file(querydslSrcDir).exists()) delete(file(querydslSrcDir))
-}
+} 
 
-tasks.withType(JavaCompile) {
-	options.annotationProcessorGeneratedSourcesDirectory = file(querydslSrcDir)
-}
+// tasks.withType(JavaCompile) {
+// 	options.annotationProcessorGeneratedSourcesDirectory = file(querydslSrcDir)
+// }

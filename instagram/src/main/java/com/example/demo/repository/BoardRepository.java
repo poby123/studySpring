@@ -13,10 +13,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BoardRepository extends JpaRepository<Board, Long>, CustomBoardRepository {
 
-    @Query("select b from Board b join fetch b.writer where b.id =:id")
+    @Query("select b from Board b join fetch b.member where b.id =:id")
     Optional<Board> findById(@Param("id") Long id);
 
 
-    @Query("select b from Board b join fetch b.writer")
+    @Query("select b from Board b join fetch b.member")
     List<Board> findAll();
 }

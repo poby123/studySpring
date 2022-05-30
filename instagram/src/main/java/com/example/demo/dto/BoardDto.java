@@ -45,7 +45,7 @@ public class BoardDto {
             ret.setId(board.getId());
             ret.setTitle(board.getTitle());
             ret.setContent(board.getContent());
-            ret.setWriter(MemberBoardViewDto.of(board.getWriter()));
+            ret.setWriter(MemberBoardViewDto.of(board.getMember()));
 
             List<BoardImageViewDto> images = board.getImages().stream().map(BoardImageViewDto::of)
                     .collect(Collectors.toUnmodifiableList());
