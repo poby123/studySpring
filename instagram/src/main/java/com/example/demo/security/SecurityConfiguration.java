@@ -43,7 +43,7 @@ public class SecurityConfiguration {
         @Override
         protected void configure(final HttpSecurity http) throws Exception {
             http.csrf().disable();
-            http.authorizeRequests().antMatchers("/", "/upload", "/signup", "/login", "/css/**").permitAll();
+            http.authorizeRequests().antMatchers("/", "/upload", "/signup", "/login", "/css/**", "/member/**").permitAll();
                     // .antMatchers("/member/**").authenticated(); // 일반사용자 접근 가능
             
             http.formLogin().loginPage("/login").defaultSuccessUrl("/");
