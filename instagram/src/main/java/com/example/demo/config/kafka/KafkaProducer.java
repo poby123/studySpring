@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 
+import com.example.demo.dto.ChatMessageDto;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -17,22 +19,22 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class KafkaProducer {
 
-    private final KafkaTemplate<String, String> kafkaTemplate;
+    private final KafkaTemplate<String, ChatMessageDto> kafkaTemplate;
 
-    public void sendMessage(String topicName, String messageKey, String message) {
+    public void sendMessage(String topicName, String messageKey, ChatMessageDto message) {
 
-        Message<String> messageBuilder = MessageBuilder
+        Message<ChatMessageDto> messageBuilder = MessageBuilder
                 .withPayload(message)
                 .setHeader(KafkaHeaders.TOPIC, topicName)
                 .setHeader(KafkaHeaders.MESSAGE_KEY, messageKey)
                 .build();
 
-        ListenableFuture<SendResult<String, String>> future = kafkaTemplate.send(messageBuilder);
+        ListenableFuture<SendResult<String, ChatMessageDto>> future = kafkaTemplate.send(messageBuilder);
 
-        future.addCallback(new ListenableFutureCallback<SendResult<String, String>>() {
+        future.addCallback(new ListenableFutureCallback<SendResult<String, ChatMessageDto>>() {
 
             @Override
-            public void onSuccess(SendResult<String, String> result) {
+            public void onSuccess(SendResult<String, ChatMessageDto> result) {
                 log.info("Sent message=[" + message + "] with offset=[" + result.getRecordMetadata().offset() + "]");
             }
 

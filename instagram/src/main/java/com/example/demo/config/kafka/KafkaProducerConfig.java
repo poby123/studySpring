@@ -12,6 +12,8 @@ import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 
+import com.example.demo.dto.ChatMessageDto;
+
 @Configuration
 @EnableKafka
 public class KafkaProducerConfig {
@@ -20,23 +22,23 @@ public class KafkaProducerConfig {
     private String bootstrapServer;
 
     @Value("${spring.kafka.producer.key-serializer}")
-    private String keyDeSerializer;
+    private String keySerializer;
 
     @Value("${spring.kafka.producer.value-serializer}")
-    private String valueDeSerializer;
+    private String valueSerializer;
 
 
     @Bean
-    public ProducerFactory<String, String> producerFactory() {
+    public ProducerFactory<String, ChatMessageDto> producerFactory() {
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServer);
-        configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, keyDeSerializer);
-        configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, valueDeSerializer);
+        configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, keySerializer);
+        configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, valueSerializer);
         return new DefaultKafkaProducerFactory<>(configProps);
     }
 
     @Bean
-    public KafkaTemplate<String, String> kafkaTemplate() {
+    public KafkaTemplate<String, ChatMessageDto> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
 }

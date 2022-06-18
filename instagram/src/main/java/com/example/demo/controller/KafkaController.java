@@ -17,10 +17,10 @@ public class KafkaController {
     
     private final KafkaProducer kafkaProducer;
 
-    @GetMapping("/kafka")
-    public String sendMessage(@RequestParam("messasge") String message) {
-        kafkaProducer.sendMessage("myTopic", "message key my-topic", "test message" + LocalDateTime.now());
-        return "Success Sending!";
-    }
+    // @GetMapping("/kafka")
+    // public String sendMessage(@RequestParam("messasge") String message) {
+    //     kafkaProducer.sendMessage("myTopic", "message key my-topic", "test message" + LocalDateTime.now());
+    //     return "Success Sending!";
+    // }
     
 }
