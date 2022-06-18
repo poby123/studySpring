@@ -1,5 +1,9 @@
 package com.example.demo.controller;
 
+import java.util.TimeZone;
+
+import org.joda.time.DateTimeZone;
+import org.joda.time.LocalDateTime;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
@@ -24,6 +28,8 @@ public class StompChatController {
     public void enter(ChatMessageDto message) {
         log.info("{}: {}님 입장", message.getRoomId(), message.getWriter());
         message.setMessage(message.getWriter() + "님이 채팅방에 참여하였습니다.");
+        message.setTimestamp(LocalDateTime.now(DateTimeZone.forTimeZone(TimeZone.getTimeZone("Asia/Seoul"))).toString());
+
         template.convertAndSend("/sub/chat/room/" + message.getRoomId(), message);
     }
 
@@ -31,6 +37,7 @@ public class StompChatController {
     @MessageMapping("/chat/message")
     public void message(ChatMessageDto message) {
         log.info("Message : {}", message.getMessage());
+
         template.convertAndSend("/sub/chat/room/" + message.getRoomId(), message);
     }
 }

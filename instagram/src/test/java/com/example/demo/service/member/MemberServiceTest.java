@@ -4,6 +4,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
 
+import org.hibernate.annotations.BatchSize;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.example.demo.dto.MemberDto.MemberProfileViewDto;
 import com.example.demo.dto.MemberDto.SignupRequest;
 import com.example.demo.entity.Board;
@@ -15,20 +24,8 @@ import com.example.demo.repository.MemberRepository;
 import com.example.demo.service.BoardService;
 import com.example.demo.service.UserDetailsServiceImpl;
 
-import org.hibernate.annotations.BatchSize;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
-
-import lombok.extern.slf4j.Slf4j;
-
 @SpringBootTest
 @RunWith(SpringRunner.class)
-@Slf4j
 public class MemberServiceTest {
 
     @Autowired
