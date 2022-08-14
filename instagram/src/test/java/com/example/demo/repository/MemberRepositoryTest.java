@@ -19,9 +19,6 @@ public class MemberRepositoryTest {
 
     @Test
     public void memberProfileViewDtoFetchTest(){
-        MemberProfileViewDto dto = memberRepository.findByUsernameForProfileDto("poby123");
-        assertEquals("하이디", dto.getName());
-        assertEquals("12345@naver.com", dto.getEmail());
 
     }
 }

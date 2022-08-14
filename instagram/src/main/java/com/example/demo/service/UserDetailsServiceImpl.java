@@ -33,6 +33,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private final MemberRepository memberRepository;
     private final MemberFollowRepository memberFollowRepository;
 
+    
     @Transactional
     public Member joinMember(SignupRequest request) {
         Member member = request.toEntity(passwordEncoder);
@@ -66,12 +67,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return memberRepository.findByUsername(username);
     }
 
+
     @Transactional
     @BatchSize(size = 200)
     public MemberProfileViewDto getMemeberToProfileViewDto(String username){
         Member member = memberRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 사용자입니다."));
         return MemberProfileViewDto.of(member);
     }
+
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

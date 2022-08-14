@@ -19,7 +19,7 @@ public class KafkaConsumer {
 
     private final SimpMessagingTemplate template;
 
-    @KafkaListener(topics = "${spring.kafka.template.test-my-topic}", containerFactory = "myTopicKafkaListenerContainerFactory", groupId = "${spring.kafka.consumer.group-id}")
+    // @KafkaListener(topics = "${spring.kafka.template.test-my-topic}", containerFactory = "myTopicKafkaListenerContainerFactory", groupId = "${spring.kafka.consumer.group-id}")
     public void listenMyTopic(@Payload ChatMessageDto message, @Header(KafkaHeaders.RECEIVED_PARTITION_ID) int partition, @Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) String messageKey) throws Exception {
         log.info("Topic: [my-topic] messageKey Message: [" + messageKey + "]");
         log.info("Topic: [my-topic] Received Message: [" + message.getMessage() + "] from partition: [" + partition + "]");

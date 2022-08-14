@@ -6,7 +6,6 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
 import com.example.demo.config.kafka.KafkaProducer;
@@ -20,7 +19,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class StompChatController {
     
-    private final SimpMessagingTemplate template;
     private final KafkaProducer kafkaProducer;
 
     /*

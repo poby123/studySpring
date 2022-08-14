@@ -1,7 +1,14 @@
 package com.example.demo.repository;
 
-import com.example.demo.dto.BoardDto.BoardViewDto;
+import java.util.Optional;
+
+import org.springframework.data.repository.query.Param;
+
+import com.example.demo.entity.Board;
 
 public interface CustomBoardRepository {
-    BoardViewDto findBoardViewDtoById(Long id);
+    
+    Optional<Board> findById(@Param("id")Long id);
+
+    Optional<Board> findByIdWithMember(@Param("id")Long id);
 }
