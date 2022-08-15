@@ -1,6 +1,6 @@
 # README.md
 ## Notice
-현재 Kafka disable 상황으로, [이 부분](https://github.com/poby123/studySpring/blob/9b1d1cdc95b62ea025dd15bff46831d483113ca5/instagram/src/main/java/com/example/demo/config/kafka/KafkaConsumer.java#L22)의 주석을 해제해야 활성화됩니다.
+현재 Kafka disable 상황으로, [이 부분](https://github.com/poby123/studySpring/blob/1c12cedd19d5b6c053875b6cb55d95eb2e3bcc52/instagram/src/main/java/com/example/demo/config/kafka/KafkaConsumer.java#L22)의 주석을 해제해야 활성화됩니다.
 
 
 ## Swagger
