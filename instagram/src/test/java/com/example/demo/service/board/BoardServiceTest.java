@@ -7,20 +7,20 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
-import com.example.demo.dto.BoardDto.BoardViewDto;
-import com.example.demo.entity.Board;
-import com.example.demo.entity.BoardImage;
-import com.example.demo.entity.Member;
-import com.example.demo.repository.BoardRepository;
-import com.example.demo.repository.MemberRepository;
-import com.example.demo.service.BoardService;
-
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import com.example.demo.domain.board.dto.BoardDto.BoardViewDto;
+import com.example.demo.domain.board.entity.Board;
+import com.example.demo.domain.board.entity.BoardImage;
+import com.example.demo.domain.board.repositoy.BoardRepository;
+import com.example.demo.domain.board.service.BoardService;
+import com.example.demo.domain.member.entity.Member;
+import com.example.demo.domain.member.repositoy.MemberRepository;
 
 import lombok.extern.slf4j.Slf4j;
 

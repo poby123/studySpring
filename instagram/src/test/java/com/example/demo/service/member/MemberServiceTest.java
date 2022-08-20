@@ -13,16 +13,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.demo.dto.MemberDto.MemberProfileViewDto;
-import com.example.demo.dto.MemberDto.SignupRequest;
-import com.example.demo.entity.Board;
-import com.example.demo.entity.Member;
-import com.example.demo.exception.types.UsernameDuplicateException;
-import com.example.demo.repository.BoardRepository;
-import com.example.demo.repository.MemberFollowRepository;
-import com.example.demo.repository.MemberRepository;
-import com.example.demo.service.BoardService;
-import com.example.demo.service.UserDetailsServiceImpl;
+import com.example.demo.domain.board.entity.Board;
+import com.example.demo.domain.board.repositoy.BoardRepository;
+import com.example.demo.domain.board.service.BoardService;
+import com.example.demo.domain.member.dto.MemberDto.MemberProfileViewDto;
+import com.example.demo.domain.member.dto.MemberDto.SignupRequest;
+import com.example.demo.domain.member.entity.Member;
+import com.example.demo.domain.member.repositoy.MemberFollowRepository;
+import com.example.demo.domain.member.repositoy.MemberRepository;
+import com.example.demo.domain.member.service.UserDetailsServiceImpl;
+import com.example.demo.global.exception.types.UsernameDuplicateException;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
