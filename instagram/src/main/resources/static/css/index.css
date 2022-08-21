@@ -53,9 +53,10 @@ article{
     align-items: center;
 }
 
-.articleA .board-container .image-container .board-image{
+.board-image{
     display: block;
-    width: 100%;
+    width: auto;
+    height: 50vh;
 }
 
 .articleA .board-title{

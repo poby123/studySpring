@@ -54,17 +54,13 @@ public class BoardService {
     }
 
 
-    public BoardViewDto findOne(Long id) {
-        Board board = boardRepository.findById(id).orElseThrow(BoardNotFoundException::new);
-        return BoardViewDto.of(board);
+    public Board findOne(Long id) {
+        return boardRepository.findById(id).orElseThrow(BoardNotFoundException::new);
     }
 
 
-    public List<BoardViewDto> findAll() {
-        List<Board> boards = boardRepository.findAll();
-        List<BoardViewDto> ret = boards.stream().map(BoardViewDto::of).collect(Collectors.toUnmodifiableList());
-
-        return ret;
+    public List<Board> findAll() {
+        return boardRepository.findAll();
     }
 
     

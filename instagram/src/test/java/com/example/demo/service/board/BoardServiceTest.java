@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.example.demo.domain.board.dto.BoardDto.BoardViewDto;
 import com.example.demo.domain.board.entity.Board;
 import com.example.demo.domain.board.entity.BoardImage;
 import com.example.demo.domain.board.repositoy.BoardRepository;
@@ -22,12 +21,9 @@ import com.example.demo.domain.board.service.BoardService;
 import com.example.demo.domain.member.entity.Member;
 import com.example.demo.domain.member.repositoy.MemberRepository;
 
-import lombok.extern.slf4j.Slf4j;
-
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Transactional
-@Slf4j
 public class BoardServiceTest {
 
     @Autowired
@@ -113,12 +109,7 @@ public class BoardServiceTest {
     @Test
     @Ignore
     public void 가져오기테스트() {
-        List<BoardViewDto> results = boardService.findAll();
-
-        for (BoardViewDto cur : results) {
-            log.info("username : {}", cur.getWriter().getUsername());
-            log.info("content : {}", cur.getContent());
-        }
+        
     }
 
 }

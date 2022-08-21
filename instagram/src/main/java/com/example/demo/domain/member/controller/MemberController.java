@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -14,9 +15,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
+import com.example.demo.domain.board.service.S3Service;
 import com.example.demo.domain.member.dto.MemberDto.LoginRequest;
-import com.example.demo.domain.member.dto.MemberDto.MemberProfileViewDto;
 import com.example.demo.domain.member.dto.MemberDto.SignupRequest;
+import com.example.demo.domain.member.entity.Member;
 import com.example.demo.domain.member.entity.SecurityUser;
 import com.example.demo.domain.member.service.UserDetailsServiceImpl;
 
@@ -56,8 +58,9 @@ public class MemberController {
 
     @GetMapping("/member/{memberUsername}")
     public String getMember(@PathVariable("memberUsername") String username, Model model) {
-        MemberProfileViewDto dto = userDetailsService.getMemeberToProfileViewDto(username);
-        model.addAttribute("member", dto);
+        Member member = userDetailsService.getMember(username).orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 사용자입니다."));
+        model.addAttribute("member", member);
+        model.addAttribute("s3Domain", S3Service.CLOUD_FRONT_DOMAIN_NAME);
 
         return "member/profile";
     }

@@ -3,7 +3,6 @@ package com.example.demo.domain.member.service;
 import java.util.List;
 import java.util.Optional;
 
-import org.hibernate.annotations.BatchSize;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -11,7 +10,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.demo.domain.member.dto.MemberDto.MemberProfileViewDto;
 import com.example.demo.domain.member.dto.MemberDto.SignupRequest;
 import com.example.demo.domain.member.entity.Member;
 import com.example.demo.domain.member.entity.MemberFollow;
@@ -65,14 +63,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     public Optional<Member> getMember(String username){
         return memberRepository.findByUsername(username);
-    }
-
-
-    @Transactional
-    @BatchSize(size = 200)
-    public MemberProfileViewDto getMemeberToProfileViewDto(String username){
-        Member member = memberRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 사용자입니다."));
-        return MemberProfileViewDto.of(member);
     }
 
 

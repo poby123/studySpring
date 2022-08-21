@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.demo.domain.board.dto.BoardDto.BoardSaveDto;
-import com.example.demo.domain.board.dto.BoardDto.BoardViewDto;
+import com.example.demo.domain.board.entity.Board;
 import com.example.demo.domain.board.service.BoardService;
 import com.example.demo.domain.member.entity.Member;
 import com.example.demo.domain.member.repositoy.MemberRepository;
-
+import com.example.demo.domain.board.service.S3Service;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -31,10 +31,26 @@ public class BoardController {
 
     @GetMapping("/")
     public String getBoards(Model model) {
-        List<BoardViewDto> boards = boardService.findAll();
+        List<Board> boards = boardService.findAll();
+        model.addAttribute("s3Domain", S3Service.CLOUD_FRONT_DOMAIN_NAME);
         model.addAttribute("boards", boards);
 
         return "index";
+    }
+
+    @GetMapping("/{boardId}")
+    public String getBoard(@PathVariable(name = "boardId") Long id, Model model) {
+        model.addAttribute("s3Domain", S3Service.CLOUD_FRONT_DOMAIN_NAME);
+        model.addAttribute("board", boardService.findOne(id));
+        return "board/board";
+    }
+
+    @GetMapping("/like/{boardId}")
+    public String boardLike(@PathVariable(name = "boardId") Long id, Model model){
+        Member member = memberRepository.findByUsername("poby123").get();
+        boardService.likeBoard(member, id);
+
+        return "redirect:/";
     }
 
     @GetMapping("/upload")
@@ -54,20 +70,6 @@ public class BoardController {
 
         Member member = memberRepository.findByUsername("poby123").get();
         boardService.save(member, dto);
-
-        return "redirect:/";
-    }
-
-    @GetMapping("/{boardId}")
-    public String getBoard(@PathVariable(name = "boardId") Long id, Model model) {
-        model.addAttribute("board", boardService.findOne(id));
-        return "board/board";
-    }
-
-    @GetMapping("/like/{boardId}")
-    public String boardLike(@PathVariable(name = "boardId") Long id, Model model){
-        Member member = memberRepository.findByUsername("poby123").get();
-        boardService.likeBoard(member, id);
 
         return "redirect:/";
     }

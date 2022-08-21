@@ -25,12 +25,12 @@
         <!-- board content container -->
         <div th:each="image : ${board.images[0]}" class="image-container">
           <a th:href="|/${board?.id}|">
-            <img th:src="${image?.fullFilePath}" class="board-image" />
+            <img th:src="|${s3Domain}${image?.url}|" class="w-100" />
           </a>
         </div>
 
         <span th:text="${board?.title}" class="board-title"></span>
-        <p><a th:text="${board?.writer?.username}" th:href="|/member/${board?.writer?.username}|" class="board-writer"></a></p>
+        <p><a th:text="${board?.member?.username}" th:href="|/member/${board?.member?.username}|" class="board-writer"></a></p>
         <div th:text="|좋아요 ${board?.likes?.size()}개|" class="board-likes"></div>
       </li>
     </div>
