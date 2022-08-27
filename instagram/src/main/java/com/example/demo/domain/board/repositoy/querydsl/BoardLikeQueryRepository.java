@@ -8,5 +8,5 @@ import com.example.demo.domain.board.dto.BoardLikeDto;
 
 @Repository
 public interface BoardLikeQueryRepository {
-    public List<BoardLikeDto> findBoardLikes(Long boardId);
+    public List<BoardLikeDto> findBoardLikes(List<Long> boardId);
 }

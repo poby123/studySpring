@@ -1,6 +1,5 @@
 package com.example.demo.domain.member.dto;
 
-import com.example.demo.domain.member.dto.MemberDto.MemberBoardViewDto;
 import com.example.demo.domain.member.entity.MemberFollow;
 
 import lombok.Data;

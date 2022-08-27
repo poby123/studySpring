@@ -1,7 +1,6 @@
 package com.example.demo.domain.board.dto;
 
-import com.example.demo.domain.member.dto.MemberDto.MemberBoardViewDto;
-import com.example.demo.domain.member.entity.Member;
+import com.example.demo.domain.member.dto.MemberBoardViewDto;
 import com.querydsl.core.annotations.QueryProjection;
 
 import lombok.Data;
@@ -13,8 +12,8 @@ public class BoardLikeDto {
     private MemberBoardViewDto member;
 
     @QueryProjection
-    public BoardLikeDto(Long boardId, Member member){
+    public BoardLikeDto(Long boardId, String username, String image){
         this.boardId = boardId;
-        this.member = new MemberBoardViewDto(member);
+        this.member = new MemberBoardViewDto(username, image);
     }
 }

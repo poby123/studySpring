@@ -20,7 +20,7 @@ public class BoardImageQueryRepository {
 
     public List<BoardImageViewDto> findAllBoardImageViewDto(List<Long> boardIds){
         return query.select(new QBoardImageViewDto(
-            qBoardImage.url
+            qBoardImage.board.id, qBoardImage.url
         ))
         .from(qBoardImage)
         .where(qBoardImage.board.id.in(boardIds))

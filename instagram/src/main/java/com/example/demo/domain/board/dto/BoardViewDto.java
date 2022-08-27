@@ -3,8 +3,7 @@ package com.example.demo.domain.board.dto;
 import java.util.List;
 
 import com.example.demo.domain.board.entity.Board;
-import com.example.demo.domain.member.dto.MemberDto.MemberBoardViewDto;
-import com.example.demo.domain.member.entity.Member;
+import com.example.demo.domain.member.dto.MemberBoardViewDto;
 import com.querydsl.core.annotations.QueryProjection;
 
 import lombok.Data;
@@ -22,11 +21,11 @@ public class BoardViewDto {
     private List<BoardLikeDto> likes;
 
     @QueryProjection
-    public BoardViewDto(Long id, String title, String content, Member member) {
+    public BoardViewDto(Long id, String title, String content, String username, String userProfileImage) {
         this.id = id;
         this.title = title;
         this.content = content;
-        this.writer = new MemberBoardViewDto(member);
+        this.writer = new MemberBoardViewDto(username, userProfileImage);
     }
 
     public static BoardViewDto of(Board board) {

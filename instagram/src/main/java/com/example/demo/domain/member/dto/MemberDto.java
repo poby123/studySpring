@@ -69,26 +69,6 @@ public class MemberDto {
 
     @Data
     @NoArgsConstructor
-    public static class MemberBoardViewDto {
-        private String username;
-        private String image;
-
-        public MemberBoardViewDto(Member member){
-            this.username = member.getUsername();
-            this.image = member.getImage();
-        }
-
-        public static MemberBoardViewDto of(Member member) {
-            MemberBoardViewDto ret = new MemberBoardViewDto();
-            ret.setUsername(member.getUsername());
-            ret.setImage(member.getImage());
-
-            return ret;
-        }
-    }
-
-    @Data
-    @NoArgsConstructor
     @AllArgsConstructor
     public static class SignupRequest {
 

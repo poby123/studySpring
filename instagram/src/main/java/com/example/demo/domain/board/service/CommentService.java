@@ -1,5 +1,7 @@
 package com.example.demo.domain.board.service;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,5 +24,9 @@ public class CommentService {
 		final Pageable pageable = PageRequest.of(page, 10);
 
         return commentRepository.findBoardCommentViewDtoPage(boardId, pageable);
+    }
+
+    public List<CommentViewDto> getCommentViewDtoList(List<Long> boardIds){
+        return commentRepository.findBoardCommentViewDtoList(boardIds);
     }
 }

@@ -1,6 +1,8 @@
 package com.example.demo.api.service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -34,7 +36,7 @@ public class BoardApiService {
         BoardViewDto dto = boardRepository.findBoardViewDto(boardId).orElseThrow(BoardNotFoundException::new);
         setBoardImages(dto);
         setBoardLike(dto);
-        setBoardComments(dto);
+        setBoardComment(dto);
 
         return dto;
     }
@@ -43,22 +45,46 @@ public class BoardApiService {
         final Pageable pageable = PageRequest.of(page, size);
         Page<BoardViewDto> postDtoPage = boardRepository.findBoardViewDtoPage(pageable);
 
+        List<BoardViewDto> dtos = postDtoPage.getContent();
+        List<Long> boardIds = dtos.stream().map(d -> d.getId()).collect(Collectors.toUnmodifiableList());
+
+        setBoardImages(dtos, boardIds);
+        setBoardLikes(dtos, boardIds);
+        setBoardComments(dtos, boardIds);
 
         return postDtoPage;
     }
 
     private void setBoardImages(BoardViewDto dto){
         List<BoardImageViewDto> images = boardImageRepository.findAllBoardImageViewDto(List.of(dto.getId()));
-        dto.setImages(images); 
+        dto.setImages(images);
+    }
+
+    private void setBoardImages(List<BoardViewDto> dtos, List<Long> boardIds){
+        List<BoardImageViewDto> images = boardImageRepository.findAllBoardImageViewDto(boardIds);
+        Map<Long, List<BoardImageViewDto>> boardImageMap = images.stream().collect(Collectors.groupingBy(BoardImageViewDto::getBoardId));
+        dtos.forEach(dto -> dto.setImages(boardImageMap.get(dto.getId())));
     }
 
     private void setBoardLike(BoardViewDto dto){
-        List<BoardLikeDto> likes = boardLikeRepository.findBoardLikes(dto.getId());
+        List<BoardLikeDto> likes = boardLikeRepository.findBoardLikes(List.of(dto.getId()));
         dto.setLikes(likes);
     }
 
-    private void setBoardComments(BoardViewDto dto) {
+    private void setBoardLikes(List<BoardViewDto> dtos, List<Long> boardIds){
+        List<BoardLikeDto> likes = boardLikeRepository.findBoardLikes(boardIds);
+        Map<Long, List<BoardLikeDto>> boardLikeMap = likes.stream().collect(Collectors.groupingBy(BoardLikeDto::getBoardId));
+        dtos.forEach(dto -> dto.setLikes(boardLikeMap.get(dto.getId())));
+    }
+
+    private void setBoardComment(BoardViewDto dto) {
         List<CommentViewDto> comments = commentService.getCommentViewDtoPage(dto.getId(), 0).getContent();
         dto.setComments(comments);
+    }
+
+    private void setBoardComments(List<BoardViewDto> dtos, List<Long> boardIds) {
+        List<CommentViewDto> comments = commentService.getCommentViewDtoList(boardIds);
+        Map<Long, List<CommentViewDto>> commentMap = comments.stream().collect(Collectors.groupingBy(CommentViewDto::getBoardId));
+        dtos.forEach(dto -> dto.setComments(commentMap.get(dto.getId())));
     }
 }

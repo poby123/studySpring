@@ -22,10 +22,10 @@ public class CommentQueryRepositoryImpl implements CommentQueryRepository {
 
     public Page<CommentViewDto> findBoardCommentViewDtoPage(Long boardId, Pageable pageable) {
         List<CommentViewDto> dtos = query
-                .select(new QCommentViewDto(qComment.writer, qComment.content))
+                .select(new QCommentViewDto(qComment.board.id, qComment.content, qComment.writer.username, qComment.writer.image))
                 .from(qComment)
-                .where(qComment.board.id.eq(boardId))
                 .innerJoin(qComment.writer, QMember.member)
+                .where(qComment.board.id.eq(boardId))
                 .orderBy(qComment.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -33,5 +33,16 @@ public class CommentQueryRepositoryImpl implements CommentQueryRepository {
 
         long total = query.selectFrom(qComment).where(qComment.board.id.eq(boardId)).fetch().size();
         return new PageImpl<>(dtos, pageable, total);
+    }
+
+    public List<CommentViewDto> findBoardCommentViewDtoList(List<Long> boardIds) {
+        return query
+                .select(new QCommentViewDto(qComment.board.id, qComment.content, qComment.writer.username, qComment.writer.image))
+                .from(qComment)
+                .innerJoin(qComment.writer, QMember.member)
+                .where(qComment.board.id.in(boardIds))
+                .orderBy(qComment.id.desc())
+                .limit(100)
+                .fetch();
     }
 }

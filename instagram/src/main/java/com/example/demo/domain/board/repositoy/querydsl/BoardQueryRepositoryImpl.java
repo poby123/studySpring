@@ -23,7 +23,7 @@ public class BoardQueryRepositoryImpl implements BoardQueryRepository {
     public Page<BoardViewDto> findBoardViewDtoPage(Pageable pageable){
         final List<BoardViewDto> dtos = query.select(
             new QBoardViewDto(
-                qBoard.id, qBoard.title, qBoard.content, qBoard.member
+                qBoard.id, qBoard.title, qBoard.content, qBoard.member.username, qBoard.member.image
             ))
             .from(qBoard)
             .offset(pageable.getOffset())
@@ -38,7 +38,7 @@ public class BoardQueryRepositoryImpl implements BoardQueryRepository {
     public Optional<BoardViewDto> findBoardViewDto(Long boardId) {
         return Optional.ofNullable(
                 query.select(new QBoardViewDto(
-                        qBoard.id, qBoard.title, qBoard.content, qBoard.member))
+                        qBoard.id, qBoard.title, qBoard.content, qBoard.member.username, qBoard.member.image))
                         .from(qBoard)
                         .where(qBoard.id.eq(boardId))
                         .fetchOne());

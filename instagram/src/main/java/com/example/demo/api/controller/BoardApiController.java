@@ -1,7 +1,5 @@
 package com.example.demo.api.controller;
 
-import javax.naming.spi.DirStateFactory.Result;
-
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,7 +27,7 @@ public class BoardApiController {
 
     private final BoardApiService boardApiService;
 
-    @Operation(summary = "gallery version1", description = "not optimized. get boards")
+    @Operation(summary = "Get board list (paging)", description = "페이징된 게시글을 가져온다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK !!"),
             @ApiResponse(responseCode = "400", description = "BAD REQUEST !!"),
@@ -43,7 +41,7 @@ public class BoardApiController {
     }
 
 
-    @Operation(summary = "gallery version1", description = "not optimized. get boards")
+    @Operation(summary = "Get board", description = "게시글을 하나 가져온다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK !!"),
             @ApiResponse(responseCode = "400", description = "BAD REQUEST !!"),
@@ -53,7 +51,7 @@ public class BoardApiController {
     @GetMapping("/{boardId}")
     public ResponseEntity<ResultResponse> getBoard(@PathVariable("boardId") long boardId) {
         final BoardViewDto result = boardApiService.getBoardViewDto(boardId);
-        return ResponseEntity.ok(ResultResponse.of(ResultCode.FIND_POST_PAGE_SUCCESS, result));
+        return ResponseEntity.ok(ResultResponse.of(ResultCode.FIND_POST_SUCCESS, result));
     }
 
     /*

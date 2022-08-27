@@ -10,18 +10,16 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class BoardImageViewDto {
+    
+    private Long boardId;
     private String filePath;
     private String fullFilePath;
 
     @QueryProjection
-    public BoardImageViewDto(String url){
+    public BoardImageViewDto(Long boardId, String url) {
+        this.boardId = boardId;
         this.filePath = url;
         this.fullFilePath = S3Service.CLOUD_FRONT_DOMAIN_NAME + url;
-    }
-
-    public BoardImageViewDto(BoardImage image){
-        this.filePath = image.getUrl();
-        this.fullFilePath = S3Service.CLOUD_FRONT_DOMAIN_NAME + image.getUrl();
     }
 
     public static BoardImageViewDto of(BoardImage image) {

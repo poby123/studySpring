@@ -14,11 +14,11 @@ public class BoardLikeQueryRepositoryImpl implements BoardLikeQueryRepository{
     private final JPAQueryFactory query;
     private final QBoardLike qBoardLike = QBoardLike.boardLike;
 
-    public List<BoardLikeDto> findBoardLikes(Long boardId){
+    public List<BoardLikeDto> findBoardLikes(List<Long> boardIds){
         List<BoardLikeDto> dtos = query
-        .select(new QBoardLikeDto(qBoardLike.board.id, qBoardLike.member))
+        .select(new QBoardLikeDto(qBoardLike.board.id, qBoardLike.member.username, qBoardLike.member.image))
         .from(qBoardLike)
-        .where(qBoardLike.board.id.eq(boardId))
+        .where(qBoardLike.board.id.in(boardIds))
         .fetch();
 
         return dtos;
