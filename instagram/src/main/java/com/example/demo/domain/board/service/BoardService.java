@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.domain.board.dto.BoardDto.BoardSaveDto;
-import com.example.demo.domain.board.dto.BoardDto.BoardViewDto;
 import com.example.demo.domain.board.entity.Board;
 import com.example.demo.domain.board.entity.BoardImage;
 import com.example.demo.domain.board.entity.BoardLike;

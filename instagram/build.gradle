@@ -19,7 +19,6 @@ configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
-	querydsl.extendsFrom compileClasspath
 }
 
 repositories {
@@ -70,7 +69,7 @@ tasks.named('test') {
 // querydsl 적용
 apply plugin: 'io.spring.dependency-management'
 apply plugin: "com.ewerk.gradle.plugins.querydsl"
-def querydslSrcDir = 'src/main/generated'
+def querydslSrcDir = 'src/main/generated/queryDsl'
 
 querydsl { 
     library = "com.querydsl:querydsl-apt"
@@ -88,9 +87,13 @@ sourceSets {
 
 compileQuerydsl{
     options.annotationProcessorPath = configurations.querydsl
-	if(file(querydslSrcDir).exists()) delete(file(querydslSrcDir))
+	// if(file(querydslSrcDir).exists()) delete(file(querydslSrcDir))
 } 
 
-// tasks.withType(JavaCompile) {
-// 	options.annotationProcessorGeneratedSourcesDirectory = file(querydslSrcDir)
-// }
+configurations {
+	querydsl.extendsFrom compileClasspath
+}
+
+tasks.withType(JavaCompile) {
+	options.annotationProcessorGeneratedSourcesDirectory = file(querydslSrcDir)
+}

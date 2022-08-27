@@ -54,6 +54,9 @@ public class Board {
     @OneToMany(mappedBy = "board", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<BoardLike> likes = new ArrayList<>();
 
+    @OneToMany(mappedBy = "board", orphanRemoval= true, cascade = CascadeType.ALL)
+    private List<Comment> comments = new ArrayList<>();
+
     @Column(nullable = false, columnDefinition = "integer default 0")
     private Integer hit = 0;
 
@@ -63,18 +66,22 @@ public class Board {
     @LastModifiedDate
     private LocalDateTime modifiedDateTime;
 
-    
     // == 연관관계 메서드 ==
-    public void setMember(Member member){
+    public void setMember(Member member) {
         this.member = member;
         member.getBoards().add(this);
     }
-    
-    public void addImage(BoardImage image){
+
+    public void addImage(BoardImage image) {
         this.images.add(image);
         image.setBoard(this);
     }
-    
+
+    public void addComment(Comment comment){
+        this.comments.add(comment);
+        comment.setBoard(this);
+    }
+
     // == 생성 메서드 ==
     @Builder
     private Board(Member writer, String title, String content) {
@@ -93,15 +100,13 @@ public class Board {
         return ret;
     }
 
-
-
     @Override
-    public String toString(){
+    public String toString() {
         StringBuffer sb = new StringBuffer();
         sb.append("writer : " + member.getUsername() + "\n");
         sb.append("content : " + content + "\n");
 
-        for(BoardImage image: images){
+        for (BoardImage image : images) {
             sb.append("\timages : " + image.getUrl() + "\n");
         }
 
