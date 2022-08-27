@@ -90,6 +90,11 @@ compileQuerydsl{
 	// if(file(querydslSrcDir).exists()) delete(file(querydslSrcDir))
 } 
 
+compileQuerydsl.doFirst {
+	if(file(querydslSrcDir).exists())
+		delete(file(querydslSrcDir))
+}
+
 configurations {
 	querydsl.extendsFrom compileClasspath
 }

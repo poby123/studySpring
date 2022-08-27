@@ -8,5 +8,4 @@ import com.example.demo.domain.board.repositoy.querydsl.BoardQueryRepository;
 
 @Repository
 public interface BoardRepository extends JpaRepository<Board, Long>, BoardQueryRepository {
-    
 }

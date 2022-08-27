@@ -9,7 +9,7 @@ import javax.validation.constraints.NotBlank;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.example.demo.domain.board.dto.BoardDto.BoardViewDto;
+import com.example.demo.domain.board.dto.BoardViewDto;
 import com.example.demo.domain.member.dto.MemberFollowDto.FollowerDto;
 import com.example.demo.domain.member.entity.Member;
 import com.example.demo.domain.member.entity.Role;
@@ -72,6 +72,11 @@ public class MemberDto {
     public static class MemberBoardViewDto {
         private String username;
         private String image;
+
+        public MemberBoardViewDto(Member member){
+            this.username = member.getUsername();
+            this.image = member.getImage();
+        }
 
         public static MemberBoardViewDto of(Member member) {
             MemberBoardViewDto ret = new MemberBoardViewDto();

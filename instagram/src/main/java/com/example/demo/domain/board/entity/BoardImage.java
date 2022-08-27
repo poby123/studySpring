@@ -32,7 +32,7 @@ public class BoardImage {
     public BoardImage(String url){
         this.url = url;
     }
-
+    
     @Builder
     public BoardImage(String url, Board board) {
         this.url = url;

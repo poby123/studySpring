@@ -7,14 +7,13 @@ import com.querydsl.core.annotations.QueryProjection;
 import lombok.Data;
 
 @Data
-public class BoardLikeDto {
-
-    private Long boardId;
+public class CommentViewDto {
     private MemberBoardViewDto member;
+    private String content;
 
     @QueryProjection
-    public BoardLikeDto(Long boardId, Member member){
-        this.boardId = boardId;
+    public CommentViewDto(Member member, String content) {
         this.member = new MemberBoardViewDto(member);
+        this.content = content;
     }
 }
