@@ -1,5 +1,6 @@
 package com.example.demo.api.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -63,7 +64,7 @@ public class BoardApiService {
     private void setBoardImages(List<BoardViewDto> dtos, List<Long> boardIds){
         List<BoardImageViewDto> images = boardImageRepository.findAllBoardImageViewDto(boardIds);
         Map<Long, List<BoardImageViewDto>> boardImageMap = images.stream().collect(Collectors.groupingBy(BoardImageViewDto::getBoardId));
-        dtos.forEach(dto -> dto.setImages(boardImageMap.get(dto.getId())));
+        dtos.forEach(dto -> dto.setImages(boardImageMap.getOrDefault(dto.getId(), new ArrayList<>())));
     }
 
     private void setBoardLike(BoardViewDto dto){
@@ -74,7 +75,7 @@ public class BoardApiService {
     private void setBoardLikes(List<BoardViewDto> dtos, List<Long> boardIds){
         List<BoardLikeDto> likes = boardLikeRepository.findBoardLikes(boardIds);
         Map<Long, List<BoardLikeDto>> boardLikeMap = likes.stream().collect(Collectors.groupingBy(BoardLikeDto::getBoardId));
-        dtos.forEach(dto -> dto.setLikes(boardLikeMap.get(dto.getId())));
+        dtos.forEach(dto -> dto.setLikes(boardLikeMap.getOrDefault(dto.getId(), new ArrayList<>())));
     }
 
     private void setBoardComment(BoardViewDto dto) {
@@ -85,6 +86,6 @@ public class BoardApiService {
     private void setBoardComments(List<BoardViewDto> dtos, List<Long> boardIds) {
         List<CommentViewDto> comments = commentService.getCommentViewDtoList(boardIds);
         Map<Long, List<CommentViewDto>> commentMap = comments.stream().collect(Collectors.groupingBy(CommentViewDto::getBoardId));
-        dtos.forEach(dto -> dto.setComments(commentMap.get(dto.getId())));
+        dtos.forEach(dto -> dto.setComments(commentMap.getOrDefault(dto.getId(), new ArrayList<>())));
     }
 }

@@ -82,6 +82,10 @@ public class Board {
         comment.setBoard(this);
     }
 
+    public void removeComment(Comment comment){
+        this.comments.remove(comment);
+    }
+
     // == 생성 메서드 ==
     @Builder
     private Board(Member writer, String title, String content) {

@@ -22,7 +22,7 @@ public class CommentQueryRepositoryImpl implements CommentQueryRepository {
 
     public Page<CommentViewDto> findBoardCommentViewDtoPage(Long boardId, Pageable pageable) {
         List<CommentViewDto> dtos = query
-                .select(new QCommentViewDto(qComment.board.id, qComment.content, qComment.writer.username, qComment.writer.image))
+                .select(new QCommentViewDto(qComment.id, qComment.content, qComment.writer.username, qComment.writer.image, qComment.board.id))
                 .from(qComment)
                 .innerJoin(qComment.writer, QMember.member)
                 .where(qComment.board.id.eq(boardId))
@@ -37,7 +37,7 @@ public class CommentQueryRepositoryImpl implements CommentQueryRepository {
 
     public List<CommentViewDto> findBoardCommentViewDtoList(List<Long> boardIds) {
         return query
-                .select(new QCommentViewDto(qComment.board.id, qComment.content, qComment.writer.username, qComment.writer.image))
+                .select(new QCommentViewDto(qComment.id, qComment.content, qComment.writer.username, qComment.writer.image, qComment.board.id))
                 .from(qComment)
                 .innerJoin(qComment.writer, QMember.member)
                 .where(qComment.board.id.in(boardIds))
