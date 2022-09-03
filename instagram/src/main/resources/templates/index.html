@@ -5,8 +5,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Art Place</title>
-  <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
-  <link th:href="@{/css/index.css}" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -18,22 +21,62 @@
       <a href="/upload">글쓰기</a>
     </div>
   </header>
-  <article class="articleA">
-    <div class="container">
-      <li th:each="board: ${boards}" class="board-container">
+  <section class="border">
+    <div class="container row gx-0 row-cols-1 row-cols-md-2 row-cols-lg-3 mx-auto border">
 
-        <!-- board content container -->
-        <div th:each="image : ${board.images[0]}" class="image-container">
-          <a th:href="|/${board?.id}|">
-            <img th:src="|${s3Domain}${image?.url}|" class="w-100" />
-          </a>
+      <!-- board -->
+      <article th:each="board: ${boards}" class="col card gy-3">
+        <div class="card-body p-1">
+
+          <!-- image carousel -->
+          <section>
+            <div class="card-img-top">
+              <div th:id="|carouselExampleControls-${board.id}|" class="carousel slide" data-bs-ride="carousel" data-bs-touch="true" data-bs-interval="false">
+                <a th:href="|/${board?.id}|">
+                  <div class="carousel-inner">
+                    <div th:each="image, index : ${board.images}" class="carousel-item"
+                      th:classappend="${index.index == 0 ? 'active' : ''}">
+                      <img th:src="|${s3Domain}${image?.url}|" class="d-block w-100 rounded" />
+                    </div>
+                  </div>
+                </a>
+  
+                <div class="carousel-indicators" th:if="${board.images.size > 1}">
+                  <button type="button" th:each="i: ${#numbers.sequence(0, board.images.size-1)}"
+                    th:data-bs-target="|#carouselExampleControls-${board.id}|" th:data-bs-slide-to="${i}"
+                    th:classappend="${i == 0 ? 'active' : ''}" th:attr="aria-current=${i == 0  ? 'true' : ''}">
+                  </button>
+                </div>
+  
+                <button class="carousel-control-prev" type="button"
+                  th:data-bs-target="|#carouselExampleControls-${board.id}|" data-bs-slide="prev"
+                  th:if="${board.images.size > 1}">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                </button>
+                <button class="carousel-control-next" type="button"
+                  th:data-bs-target="|#carouselExampleControls-${board.id}|" data-bs-slide="next"
+                  th:if="${board.images.size > 1}">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <!-- board contents etc.. -->
+          <section>
+            <span th:text="${board?.title}" class="card-title"></span>
+            <p><a th:text="${board?.member?.username}" th:href="|/member/${board?.member?.username}|"
+                class="board-writer"></a></p>
+            <div th:text="|좋아요 ${board?.likes?.size()}개|" class="board-likes"></div>
+            <p th:text="${board?.content}" class="card-content text-truncate"></p>
+          </section>
+
         </div>
-
-        <span th:text="${board?.title}" class="board-title"></span>
-        <p><a th:text="${board?.member?.username}" th:href="|/member/${board?.member?.username}|" class="board-writer"></a></p>
-        <div th:text="|좋아요 ${board?.likes?.size()}개|" class="board-likes"></div>
-      </li>
+      </article>
     </div>
-  </article>
+  </section>
+  <script th:src="@{/js/index.js}"></script>
+  <link th:href="@{/css/index.css}" rel="stylesheet">
 </body>
+
 </html>

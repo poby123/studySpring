@@ -16,10 +16,6 @@ header div{
     border: 1px solid pink;
 }
 
-article{
-    border: 1px solid red;
-}
-
 /*  Article */
 .articleA{
     display: flex;
