@@ -1,34 +1,61 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<head>
-  <meta charset="UTF-8">
-  <title>Art Place</title>
-  <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
-  <link th:href="@{/css/index.css}" rel="stylesheet">
+<head th:replace="fragments/header :: header">
 </head>
 
 <body>
-  <header class="border border-bottom">
-    <div class="container">
-      <h1>Art Place</h1>
-
-    </div>
+  <header th:replace="fragments/bodyHeader :: bodyHeader">
   </header>
-  <article class="article d-flex">
-    <div class="mx-auto vw-80 border border-primary d-block">
-        <div th:each="image : ${board.images}" class="w-100 d-flex justify-content-center align-items-center">
-          <img th:src="|${s3Domain}${image?.url}|" class="board-image"/>
-        </div>
+  <section class="border">
+    <div class="container row gx-0 row-cols-1 mx-auto border">
 
-        <span th:text="${board?.title}" class="board-title"></span>
-        <span th:text="${board?.content}" class="board-content"></span>
-        <p><a th:text="${board?.member?.username}" th:href="|/member/${board?.member?.username}|"
-            class="board-writer"></a>
-        </p>
-        <div th:text="|좋아요 ${board?.likes?.size()}개|" class="board-likes"></div>
+      <!-- board -->
+      <article class="col card gy-3">
+        <div class="card-body p-1">
+
+          <section>
+            <p><a th:text="${board?.member?.username}" th:href="|/member/${board?.member?.username}|"
+                class="board-writer"></a></p>
+          </section>
+
+          <!-- image carousel -->
+          <section th:replace="fragments/imageCarousel :: imageCarousel">
+          </section>
+
+          <!-- board contents etc.. -->
+          <section>
+            <span th:text="${board?.title}" class="card-title"></span>
+            <div th:text="|좋아요 ${board?.likes?.size()}개|" class="board-likes"></div>
+            <p th:text="${board?.content}" class="card-content text-truncate"></p>
+          </section>
+
+        </div>
+      </article>
+
+
+      <!-- comment list-->
+      <section class="col card gy-3 m-b-3 min-h-30">
+        <div th:each="comment: ${board?.comments}">
+          <p th:text="${comment.content}"></p>
+        </div>
+      </section>
+
+      <!-- comment write -->
+      <section class="col card position-fixed bottom-0">
+        <form onsubmit="commentSave(event)" class="d-flex g-3 align-items-center w-100 border">
+          <div class="w-80">
+            <input type="text" id="commentContent" class="form-control" required>
+            <input type="hidden" th:value="${board?.id}" id="boardId"/>
+          </div>
+          <div class="">
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+        </form>
+      </section>
     </div>
-  </article>
+  </section>
+  <footer th:replace="fragments/footer :: footer"></footer>
 </body>
 
 </html>

@@ -1,54 +1,69 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Art Place | Profile</title>
-    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+
+<head th:replace="fragments/header :: header">
 </head>
+
 <body>
 
-<div class="container">
-    <div class="my-4">
-        <h2>Profile</h2>
-    </div>
-    <div th:object="${member}">
-        <div class="mb-3">
-            <span id="id" th:text="${member.username}">
+    <div class="container">
+        <div class="my-4">
+            <h2>Profile</h2>
         </div>
-        <div class="mb-3">
-            <span id="id" th:text="${member.name}">
-        </div>
-        <div class="mb-3">
-            <span id="id" th:text="${member.image}">
-        </div>
-        <div class="mb-3">
-            <span id="id" th:text="${member.email}">
-        </div>
-        <div class="mb-3">
-            <span id="id" th:text="${member.job}">
-        </div>
-        <div class="mb-3">
-            <span id="id" th:text="${member.about}">
-        </div>
-        <div class="mb-3">
-            팔로워: 
-            <span id="id" th:text="${member.followers.size}">
-        </div>
+        <div th:object="${member}">
+            <div class="mb-3">
+                <span id="id" th:text="${member.username}">
+            </div>
+            <div class="mb-3">
+                <span id="id" th:text="${member.name}">
+            </div>
+            <div class="mb-3">
+                <span id="id" th:text="${member.image}">
+            </div>
+            <div class="mb-3">
+                <span id="id" th:text="${member.email}">
+            </div>
+            <div class="mb-3">
+                <span id="id" th:text="${member.job}">
+            </div>
+            <div class="mb-3">
+                <span id="id" th:text="${member.about}">
+            </div>
+            <div class="mb-3">
+                팔로워:
+                <span id="id" th:text="${member.followers.size}">
+            </div>
 
-        <div class="board-container-b">
-            <div th:each="board : ${member.boards}">
-                <div th:each="image : ${board.images}" class="image-container">
-                    <img th:src="|${s3Domain}${image?.url}|" class="board-image" />
-                  </div>
-                  
-                  <span th:text="${board?.title}" class="board-title"></span>
-                  <span th:text="${board?.content}" class="board-content"></span>
-                  <span th:text="${board?.member?.username}" class="board-writer"></span>
-                  <span th:text="|id: ${board?.id}|" class="board-likes"></span>
-                  <span th:text="|좋아요 ${board?.likes?.size()}개|" class="board-likes"></span>
+            <div class="container row gx-0 row-cols-1 row-cols-md-2 row-cols-lg-3 mx-auto border">
+
+                <!-- board -->
+                <article th:each="board: ${member.boards}" class="col card gy-3">
+                    <div class="card-body p-1">
+
+                        <section>
+                            <p><a th:text="${board?.member?.username}" th:href="|/member/${board?.member?.username}|"
+                                    class="board-writer"></a></p>
+                        </section>
+
+                        <!-- image carousel -->
+                        <section th:replace="fragments/imageCarousel :: imageCarousel">
+                        </section>
+
+                        <!-- board contents etc.. -->
+                        <section>
+                            <span th:text="${board?.title}" class="card-title"></span>
+                            <div th:text="|좋아요 ${board?.likes?.size()}개|" class="board-likes"></div>
+                            <p th:text="${board?.content}" class="card-content text-truncate"></p>
+                        </section>
+
+                    </div>
+                </article>
             </div>
         </div>
     </div>
-</div>
+    <footer th:replace="fragments/footer :: footer">
+
+    </footer>
 </body>
+
 </html>
