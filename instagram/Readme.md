@@ -1,4 +1,14 @@
 # README.md
+## Todo
+- 🎈 게시물 좋아요수와 현재 로그인한 유저의 좋아요 유무를 알도록 BoardLikeDto 수정 및 쿼리 제작.
+- 🎈 좋아요 기능.
+- 🎈 api가 얼추 완성되면 웹 서비스단도 api걸 써서 osiv를 꺼도 잘 동작하도록 하기.
+
+## Complete
+- 💎 웹 댓글 추가 기능. ajax로 처리함.
+
+---
+
 ## Notice
 현재 Kafka disable 상황으로, 적용하고 싶다면[이 부분](https://github.com/poby123/studySpring/blob/1c12cedd19d5b6c053875b6cb55d95eb2e3bcc52/instagram/src/main/java/com/example/demo/config/kafka/KafkaConsumer.java#L22)의 주석을 해제해야 활성화됩니다.
 

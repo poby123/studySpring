@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.domain.board.dto.BoardImageViewDto;
-import com.example.demo.domain.board.dto.BoardLikeDto;
+import com.example.demo.domain.board.dto.BoardLikeListDto;
 import com.example.demo.domain.board.dto.BoardViewDto;
 import com.example.demo.domain.board.dto.CommentViewDto;
 import com.example.demo.domain.board.repositoy.BoardLikeRepository;
@@ -68,13 +68,13 @@ public class BoardApiService {
     }
 
     private void setBoardLike(BoardViewDto dto){
-        List<BoardLikeDto> likes = boardLikeRepository.findBoardLikes(List.of(dto.getId()));
+        List<BoardLikeListDto> likes = boardLikeRepository.findBoardLikeListDto(List.of(dto.getId()));
         dto.setLikes(likes);
     }
 
     private void setBoardLikes(List<BoardViewDto> dtos, List<Long> boardIds){
-        List<BoardLikeDto> likes = boardLikeRepository.findBoardLikes(boardIds);
-        Map<Long, List<BoardLikeDto>> boardLikeMap = likes.stream().collect(Collectors.groupingBy(BoardLikeDto::getBoardId));
+        List<BoardLikeListDto> likes = boardLikeRepository.findBoardLikeListDto(boardIds);
+        Map<Long, List<BoardLikeListDto>> boardLikeMap = likes.stream().collect(Collectors.groupingBy(BoardLikeListDto::getBoardId));
         dtos.forEach(dto -> dto.setLikes(boardLikeMap.getOrDefault(dto.getId(), new ArrayList<>())));
     }
 

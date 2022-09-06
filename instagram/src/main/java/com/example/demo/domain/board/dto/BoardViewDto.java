@@ -18,7 +18,7 @@ public class BoardViewDto {
     private MemberBoardViewDto writer;
     private List<CommentViewDto> comments;
     private List<BoardImageViewDto> images;
-    private List<BoardLikeDto> likes;
+    private List<BoardLikeListDto> likes;
 
     @QueryProjection
     public BoardViewDto(Long id, String title, String content, String username, String userProfileImage) {
