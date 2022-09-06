@@ -1,3 +1,6 @@
+/**
+ * Toggle board contents truncation.
+ */
 const cardContents = document.querySelectorAll('.text-truncate');
 cardContents.forEach((card) => {
     card.addEventListener('click', (e) => {
@@ -5,18 +8,58 @@ cardContents.forEach((card) => {
     })
 })
 
+/**
+ * Add a new comment to list dynamically.
+ */
+function addCommentNode(comment) {
+    const commentList = document.querySelector('#comment-list');
 
+    const container = document.createElement('div');
+    container.classList.add('card-body', 'border', 'p-1', 'bg-success' ,'text-white');
+
+    const writerText = document.createElement('a');
+    writerText.setAttribute('href', `/member/${comment.member.username}`);
+    writerText.style = 'color: white;'
+    writerText.innerText = `${comment.member.username}`;
+
+    const writerSection = document.createElement('p');
+    writerSection.appendChild(writerText)
+
+    const commentText = document.createElement('p');
+    commentText.classList.add('align-middle', 'h-100');
+    commentText.innerText = `${comment.content}`;
+
+    container.append(writerSection, commentText);
+    commentList.prepend(container);
+}
+
+/**
+ * Set comment save failed alert.
+ * @param {Boolean} show 
+ */
+function setShowFailedAlert(show) {
+    const alert = document.querySelector('#comment-save-failed-alert');
+    if (show) {
+        alert.classList.remove('d-none');
+    }
+    else {
+        alert.classList.add('d-none');
+    }
+}
+
+/**
+ * Save comment by sending post request to a server.
+ * @param {Object} e 
+ */
 function commentSave(e) {
     e.preventDefault();
     const boardId = Number(document.querySelector('#boardId').value);
-    const content = document.querySelector('#commentContent').value;
+    const contentNode = document.querySelector('#commentContent');
 
     const saveDto = {
         'boardId': boardId,
-        'content': content
+        'content': contentNode.value
     }
-
-    console.log(saveDto);
 
     $.ajax({
         type: "POST",
@@ -25,10 +68,12 @@ function commentSave(e) {
         dataType: 'json',
         contentType: 'application/json',
         success: (data) => {
-            console.log(data);
+            setShowFailedAlert(false);
+            addCommentNode(data);
+            contentNode.value = ''
         },
         error: (err) => {
-            console.log(err);
+            setShowFailedAlert(true);
         }
     });
 }

@@ -34,25 +34,33 @@
       </article>
 
 
-      <!-- comment list-->
-      <section class="col card gy-3 m-b-3 min-h-30">
-        <div th:each="comment: ${board?.comments}">
-          <p th:text="${comment.content}"></p>
-        </div>
-      </section>
-
       <!-- comment write -->
-      <section class="col card position-fixed bottom-0">
-        <form onsubmit="commentSave(event)" class="d-flex g-3 align-items-center w-100 border">
-          <div class="w-80">
+      <section class="col card">
+        <form onsubmit="commentSave(event)" class="g-3 align-items-center w-100 border">
+          <div class="col-md-auto">
             <input type="text" id="commentContent" class="form-control" required>
-            <input type="hidden" th:value="${board?.id}" id="boardId"/>
+            <input type="hidden" th:value="${board?.id}" id="boardId" />
           </div>
-          <div class="">
+          <div class="col-md-auto">
             <button type="submit" class="btn btn-primary">Submit</button>
           </div>
         </form>
       </section>
+
+      <!-- comment list-->
+      <section id="comment-list" class="col card min-vh-50">
+        
+        <!-- comment saved failed alert -->
+        <section id="comment-save-failed-alert" class="alert alert-danger card-body border d-none" role="alert">
+          Faild to save comment...
+        </section>
+
+        <div th:each="comment: ${board?.comments}" class="card-body border p-1">
+          <p><a th:text="${comment?.writer?.username}" th:href="|/member/${comment?.writer?.username}|"></a></p>
+          <p class="align-middle h-100" th:text="${comment.content}"></p>
+        </div>
+      </section>
+
     </div>
   </section>
   <footer th:replace="fragments/footer :: footer"></footer>
