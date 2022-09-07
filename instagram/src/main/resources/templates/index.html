@@ -15,7 +15,7 @@
         <div class="card-body p-1">
 
           <section>
-            <p><a th:text="${board?.member?.username}" th:href="|/member/${board?.member?.username}|"
+            <p><a th:text="${board?.writer.username}" th:href="|/member/${board?.writer.username}|"
                 class="board-writer"></a></p>
           </section>
 
@@ -28,6 +28,8 @@
             <span th:text="${board?.title}" class="card-title"></span>
             <div th:text="|좋아요 ${board?.likes?.size()}개|" class="board-likes"></div>
             <p th:text="${board?.content}" class="card-content text-truncate"></p>
+            <!-- <a th:if="${board?.likes.} == 'poby123'" th:href="|/api/boards/like/${board?.id}|" class="text-danger"><i class="fa-solid fa-heart"></i></a>
+            <a th:unless="${board?.likes.member.username} == 'poby123'" th:href="|/api/boards/like/${board?.id}|" class="text-danger"><i class="fa-regular fa-heart"></i></a> -->
           </section>
 
         </div>

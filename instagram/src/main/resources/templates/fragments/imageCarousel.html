@@ -8,7 +8,7 @@
                 <div class="carousel-inner">
                     <div th:each="image, index : ${board.images}" class="carousel-item"
                         th:classappend="${index.index == 0 ? 'active' : ''}">
-                        <img th:src="|${s3Domain}${image?.url}|" class="d-block w-100 rounded" />
+                        <img th:src="|${image.fullFilePath}|" class="d-block w-100 rounded" />
                     </div>
                 </div>
             </a>

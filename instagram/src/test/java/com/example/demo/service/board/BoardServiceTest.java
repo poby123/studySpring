@@ -83,7 +83,7 @@ public class BoardServiceTest {
         Member member = memberRepository.findByUsername(writer).get();
 
         // when1
-        boardService.likeBoard(member, boardId);
+        boardService.likeBoard(boardId);
         
         // then1
         board = boardRepository.findById(boardId).get();
@@ -96,7 +96,7 @@ public class BoardServiceTest {
         assertEquals(boardId, member.getLikeBoards().get(0).getBoard().getId());
         
         // when2
-        boardService.likeBoard(member, boardId);
+        boardService.likeBoard(boardId);
 
         // then2
         board = boardRepository.findById(boardId).get();

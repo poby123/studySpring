@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.api.service.BoardApiService;
 import com.example.demo.domain.board.dto.BoardViewDto;
+import com.example.demo.domain.board.service.BoardService;
 import com.example.demo.global.result.ResultCode;
 import com.example.demo.global.result.ResultResponse;
 
@@ -25,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class BoardApiController {
 
+    private final BoardService boardService;
     private final BoardApiService boardApiService;
 
     @Operation(summary = "Get board list (paging)", description = "페이징된 게시글을 가져온다.")
@@ -35,11 +37,11 @@ public class BoardApiController {
             @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR !!")
     })
     @GetMapping
-    public ResponseEntity<ResultResponse> getList(@RequestParam("size") int size, @RequestParam("page") int page) {
+    public ResponseEntity<ResultResponse> getList(@RequestParam(defaultValue = "10", required = false) int size,
+            @RequestParam(defaultValue = "0", required = false) int page) {
         final Page<BoardViewDto> result = boardApiService.getBoardViewDtoPage(size, page);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.FIND_POST_PAGE_SUCCESS, result));
     }
-
 
     @Operation(summary = "Get board", description = "게시글을 하나 가져온다.")
     @ApiResponses({
@@ -52,6 +54,19 @@ public class BoardApiController {
     public ResponseEntity<ResultResponse> getBoard(@PathVariable("boardId") long boardId) {
         final BoardViewDto result = boardApiService.getBoardViewDto(boardId);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.FIND_POST_SUCCESS, result));
+    }
+
+    @Operation(summary = "Do like or dislike board", description = "좋아요 혹은 좋아요 해제")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK !!"),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST !!"),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND !!"),
+            @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR !!")
+    })
+    @GetMapping("/like/{boardId}")
+    public ResponseEntity<ResultResponse> toggleBoardLike(@PathVariable("boardId") long boardId) {
+        boardService.likeBoard(boardId);
+        return ResponseEntity.ok(ResultResponse.of(ResultCode.LIKE_POST_SUCCESS));
     }
 
     /*

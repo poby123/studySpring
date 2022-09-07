@@ -1,6 +1,7 @@
 package com.example.demo.api.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.domain.board.dto.BoardImageViewDto;
-import com.example.demo.domain.board.dto.BoardLikeListDto;
+import com.example.demo.domain.board.dto.BoardLikeDto;
 import com.example.demo.domain.board.dto.BoardViewDto;
 import com.example.demo.domain.board.dto.CommentViewDto;
 import com.example.demo.domain.board.repositoy.BoardLikeRepository;
@@ -20,6 +21,7 @@ import com.example.demo.domain.board.repositoy.BoardRepository;
 import com.example.demo.domain.board.repositoy.querydsl.BoardImageQueryRepository;
 import com.example.demo.domain.board.service.CommentService;
 import com.example.demo.global.exception.types.BoardNotFoundException;
+import com.querydsl.core.Tuple;
 
 import lombok.RequiredArgsConstructor;
 
@@ -36,7 +38,7 @@ public class BoardApiService {
     public BoardViewDto getBoardViewDto(Long boardId){
         BoardViewDto dto = boardRepository.findBoardViewDto(boardId).orElseThrow(BoardNotFoundException::new);
         setBoardImages(dto);
-        setBoardLike(dto);
+        setBoardLike(dto, "poby123");
         setBoardComment(dto);
 
         return dto;
@@ -50,7 +52,7 @@ public class BoardApiService {
         List<Long> boardIds = dtos.stream().map(d -> d.getId()).collect(Collectors.toUnmodifiableList());
 
         setBoardImages(dtos, boardIds);
-        setBoardLikes(dtos, boardIds);
+        setBoardLikes(dtos, boardIds, "poby123");
         setBoardComments(dtos, boardIds);
 
         return postDtoPage;
@@ -67,15 +69,34 @@ public class BoardApiService {
         dtos.forEach(dto -> dto.setImages(boardImageMap.getOrDefault(dto.getId(), new ArrayList<>())));
     }
 
-    private void setBoardLike(BoardViewDto dto){
-        List<BoardLikeListDto> likes = boardLikeRepository.findBoardLikeListDto(List.of(dto.getId()));
-        dto.setLikes(likes);
+    private void setBoardLike(BoardViewDto dto, String username){
+        // List<BoardLikeListDto> likes = boardLikeRepository.findBoardLikeListDto(List.of(dto.getId()));
+        List<Tuple> likes = boardLikeRepository.findBoardLikeDto(List.of(dto.getId()), username);
+        dto.setLikes(convertToMemberLikeDto(likes, username).get(dto.getId()));
     }
 
-    private void setBoardLikes(List<BoardViewDto> dtos, List<Long> boardIds){
-        List<BoardLikeListDto> likes = boardLikeRepository.findBoardLikeListDto(boardIds);
-        Map<Long, List<BoardLikeListDto>> boardLikeMap = likes.stream().collect(Collectors.groupingBy(BoardLikeListDto::getBoardId));
-        dtos.forEach(dto -> dto.setLikes(boardLikeMap.getOrDefault(dto.getId(), new ArrayList<>())));
+    private Map<Long, BoardLikeDto> convertToMemberLikeDto(List<Tuple> likes, String username){
+        // likes <boardId, username>
+        Map<Long, List<Tuple>> boardLikeMap = likes.stream().collect(Collectors.groupingBy(t -> t.get(0, Long.class)));
+        Map<Long, Boolean> isMemberLike = new HashMap<>();
+        Map<Long, BoardLikeDto> ret = new HashMap<>(); 
+
+        boardLikeMap.forEach((Long boardId, List<Tuple> content) -> {
+            List<String> likeUsernames = content.stream().map(c -> c.get(1, String.class)).collect(Collectors.toUnmodifiableList());
+            isMemberLike.put(boardId, likeUsernames.contains(username));
+        });
+
+        isMemberLike.forEach((Long boardId, Boolean isCurrentMemberLike) -> {
+            int size = boardLikeMap.get(boardId).size();
+            ret.put(boardId, new BoardLikeDto(boardId, size, isCurrentMemberLike));
+        });
+
+        return ret;
+    }
+
+    private void setBoardLikes(List<BoardViewDto> dtos, List<Long> boardIds, String username){
+        List<Tuple> likes = boardLikeRepository.findBoardLikeDto(boardIds, username);
+        dtos.forEach(dto -> dto.setLikes(convertToMemberLikeDto(likes, username).get(dto.getId())));
     }
 
     private void setBoardComment(BoardViewDto dto) {

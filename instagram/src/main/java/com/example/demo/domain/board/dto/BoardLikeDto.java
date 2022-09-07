@@ -7,11 +7,10 @@ import lombok.Data;
 @Data
 public class BoardLikeDto {
     private Long boardId;
-    private Long numberOfLikes;
+    private int numberOfLikes;
     private boolean isCurrentMemberLike;
-
-    @QueryProjection
-    public BoardLikeDto(Long boardId, Long numberOfLikes, boolean isCurrentMemberLike) {
+    
+    public BoardLikeDto(Long boardId, int numberOfLikes, boolean isCurrentMemberLike) {
         this.boardId = boardId;
         this.numberOfLikes = numberOfLikes;
         this.isCurrentMemberLike = isCurrentMemberLike;

@@ -12,6 +12,5 @@ import com.example.demo.domain.member.entity.Member;
 
 @Repository
 public interface BoardLikeRepository extends JpaRepository<BoardLike, Long>, BoardLikeQueryRepository{
-    
     public List<BoardLike> findByMemberAndBoard(Member member, Board board);
 }

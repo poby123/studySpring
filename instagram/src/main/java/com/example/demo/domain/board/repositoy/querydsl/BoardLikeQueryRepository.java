@@ -4,11 +4,11 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import com.example.demo.domain.board.dto.BoardLikeDto;
 import com.example.demo.domain.board.dto.BoardLikeListDto;
+import com.querydsl.core.Tuple;
 
 @Repository
 public interface BoardLikeQueryRepository {
-    public List<BoardLikeDto> findBoardLikeDto(List<Long> boardIds);
+    public List<Tuple> findBoardLikeDto(List<Long> boardIds, String username);
     public List<BoardLikeListDto> findBoardLikeListDto(List<Long> boardId);
 }

@@ -14,6 +14,9 @@ import com.example.demo.domain.board.entity.BoardLike;
 import com.example.demo.domain.board.repositoy.BoardLikeRepository;
 import com.example.demo.domain.board.repositoy.BoardRepository;
 import com.example.demo.domain.member.entity.Member;
+import com.example.demo.domain.member.repositoy.MemberRepository;
+import com.example.demo.global.exception.BusinessException;
+import com.example.demo.global.exception.ErrorCode;
 import com.example.demo.global.exception.types.BoardNotFoundException;
 
 import lombok.RequiredArgsConstructor;
@@ -25,6 +28,7 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
     private final BoardLikeRepository boardLikeRepository;
+    private final MemberRepository memberRepository;
     private final S3Service s3Service;
 
     @Transactional
@@ -64,8 +68,9 @@ public class BoardService {
 
     
     @Transactional
-    public void likeBoard(Member member, Long boardId) {
+    public void likeBoard(Long boardId) {
         Board board = boardRepository.findById(boardId).orElseThrow(BoardNotFoundException::new);
+        Member member = memberRepository.findByUsername("poby123").orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
         List<BoardLike> like = boardLikeRepository.findByMemberAndBoard(member, board);
 
         if(like.isEmpty()){

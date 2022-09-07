@@ -15,7 +15,7 @@
         <div class="card-body p-1">
 
           <section>
-            <p><a th:text="${board?.member?.username}" th:href="|/member/${board?.member?.username}|"
+            <p><a th:text="${board?.writer.username}" th:href="|/member/${board?.writer.username}|"
                 class="board-writer"></a></p>
           </section>
 
@@ -56,7 +56,7 @@
         </section>
 
         <div th:each="comment: ${board?.comments}" class="card-body border p-1">
-          <p><a th:text="${comment?.writer?.username}" th:href="|/member/${comment?.writer?.username}|"></a></p>
+          <p><a th:text="${comment.member.username}" th:href="|/member/${comment.member.username}|"></a></p>
           <p class="align-middle h-100" th:text="${comment.content}"></p>
         </div>
       </section>
