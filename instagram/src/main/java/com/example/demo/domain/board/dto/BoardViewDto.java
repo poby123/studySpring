@@ -19,7 +19,7 @@ public class BoardViewDto {
     private List<CommentViewDto> comments;
     private List<BoardImageViewDto> images;
     // private List<BoardLikeListDto> likes;
-    private BoardLikeDto likes;
+    private BoardLikeDto like;
 
     @QueryProjection
     public BoardViewDto(Long id, String title, String content, String username, String userProfileImage) {

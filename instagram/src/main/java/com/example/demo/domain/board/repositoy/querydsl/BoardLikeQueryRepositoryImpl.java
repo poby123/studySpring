@@ -15,9 +15,9 @@ public class BoardLikeQueryRepositoryImpl implements BoardLikeQueryRepository {
     private final JPAQueryFactory query;
     private final QBoardLike qBoardLike = QBoardLike.boardLike;
 
-    public List<Tuple> findBoardLikeDto(List<Long> boardIds, String username) {
+    public List<Tuple> findBoardLikeDto(List<Long> boardIds) {
         return query
-                .select(qBoardLike.board.id, qBoardLike.member.username)
+                .select(qBoardLike.board.id, qBoardLike.member.id)
                 .from(qBoardLike)
                 .where(qBoardLike.board.id.in(boardIds))
                 .fetch();

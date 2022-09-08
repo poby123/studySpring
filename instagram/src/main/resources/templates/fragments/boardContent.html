@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<section th:fragment="boardContent">
+    <span th:text="${board?.title}" class="card-title"></span>
+    <span class="d-flex">좋아요 <div th:text="|${board?.like.numberOfLikes}|" class="board-likes"
+            th:id="|numOfLike-${board?.id}|"></div>개</span>
+    <a class="board-like-button text-danger" th:id="${board?.id}">
+        <i th:classappend="${board?.like.currentMemberLike ? 'fa-solid fa-heart' : 'fa-regular fa-heart'}"></i>
+    </a>
+    <p th:text="${board?.content}" class="card-content text-truncate"></p>
+</section>

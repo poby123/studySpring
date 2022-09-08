@@ -35,15 +35,15 @@ public class BoardService {
     public Long save(Member member, BoardSaveDto dto) {
         Board board = Board.createBoard(member, dto.getTitle(), dto.getContent(), new ArrayList<>());
 
-        List<BoardImage> images = s3Service.upload(dto.getFiles()).stream().map(BoardImage::new).collect(Collectors.toList());
-        for(BoardImage image : images){
+        List<BoardImage> images = s3Service.upload(dto.getFiles()).stream().map(BoardImage::new)
+                .collect(Collectors.toList());
+        for (BoardImage image : images) {
             board.addImage(image);
         }
 
         board = boardRepository.save(board);
         return board.getId();
     }
-
 
     @Transactional
     public void remove(Long id) {
@@ -56,28 +56,25 @@ public class BoardService {
         boardRepository.delete(board);
     }
 
-
     public Board findOne(Long id) {
         return boardRepository.findById(id).orElseThrow(BoardNotFoundException::new);
     }
-
 
     public List<Board> findAll() {
         return boardRepository.findAll();
     }
 
-    
     @Transactional
-    public void likeBoard(Long boardId) {
+    public boolean likeBoard(Long boardId) {
         Board board = boardRepository.findById(boardId).orElseThrow(BoardNotFoundException::new);
         Member member = memberRepository.findByUsername("poby123").orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
         List<BoardLike> like = boardLikeRepository.findByMemberAndBoard(member, board);
 
         if(like.isEmpty()){
             BoardLike.doLike(member, board);
+            return true;
         }
-        else{
-            BoardLike.undoLike(like.get(0));
-        }
+        BoardLike.undoLike(like.get(0));
+        return false;
     }
 }

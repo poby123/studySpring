@@ -24,12 +24,7 @@
           </section>
 
           <!-- board contents etc.. -->
-          <section>
-            <span th:text="${board?.title}" class="card-title"></span>
-            <div th:text="|좋아요 ${board?.likes?.size()}개|" class="board-likes"></div>
-            <p th:text="${board?.content}" class="card-content text-truncate"></p>
-            <!-- <a th:if="${board?.likes.} == 'poby123'" th:href="|/api/boards/like/${board?.id}|" class="text-danger"><i class="fa-solid fa-heart"></i></a>
-            <a th:unless="${board?.likes.member.username} == 'poby123'" th:href="|/api/boards/like/${board?.id}|" class="text-danger"><i class="fa-regular fa-heart"></i></a> -->
+          <section th:replace="fragments/boardContent :: boardContent">
           </section>
 
         </div>

@@ -15,7 +15,7 @@ function addCommentNode(comment) {
     const commentList = document.querySelector('#comment-list');
 
     const container = document.createElement('div');
-    container.classList.add('card-body', 'border', 'p-1', 'bg-success' ,'text-white');
+    container.classList.add('card-body', 'border', 'p-1', 'bg-success', 'text-white');
 
     const writerText = document.createElement('a');
     writerText.setAttribute('href', `/member/${comment.member.username}`);
@@ -77,3 +77,44 @@ function commentSave(e) {
         }
     });
 }
+
+
+/**
+ * Toggle board contents truncation.
+ */
+const boardLikeButtons = document.querySelectorAll('.board-like-button');
+boardLikeButtons.forEach((b) => {
+    b.addEventListener('click', boardLikeOrDisLike);
+})
+
+/**
+ * 
+ * @param {Object} e 
+ */
+function boardLikeOrDisLike(e) {
+
+    const boardId = e.currentTarget.id;
+    const iconNode = e.currentTarget.querySelector('i');
+    const numOfLikeNode = document.querySelector(`#numOfLike-${boardId}`);
+
+    $.ajax({
+        type: "PUT",
+        url: `http://wj-code-server.com:8080/api/boards/like/${boardId}`,
+        th:href="|/api/boards/like/${board?.id}|",
+        success: ({data}) => {
+            iconNode.classList.toggle('fa-regular');
+            iconNode.classList.toggle('fa-solid');
+
+            if(data){
+                numOfLikeNode.innerText = Number(numOfLikeNode.innerText) + 1;
+            }
+            else{
+                numOfLikeNode.innerText = Number(numOfLikeNode.innerText) - 1;
+            }
+        },
+        error: (err) => {
+            console.log(err);
+        }
+    });
+}
+// th:href="|/api/boards/like/${board?.id}|"

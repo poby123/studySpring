@@ -9,6 +9,6 @@ import com.querydsl.core.Tuple;
 
 @Repository
 public interface BoardLikeQueryRepository {
-    public List<Tuple> findBoardLikeDto(List<Long> boardIds, String username);
+    public List<Tuple> findBoardLikeDto(List<Long> boardIds);
     public List<BoardLikeListDto> findBoardLikeListDto(List<Long> boardId);
 }

@@ -22,12 +22,9 @@
           <!-- image carousel -->
           <section th:replace="fragments/imageCarousel :: imageCarousel">
           </section>
-
+          
           <!-- board contents etc.. -->
-          <section>
-            <span th:text="${board?.title}" class="card-title"></span>
-            <div th:text="|좋아요 ${board?.likes?.size()}개|" class="board-likes"></div>
-            <p th:text="${board?.content}" class="card-content text-truncate"></p>
+          <section th:replace="fragments/boardContent :: boardContent">
           </section>
 
         </div>
