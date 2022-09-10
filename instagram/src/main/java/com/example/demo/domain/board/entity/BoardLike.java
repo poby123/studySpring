@@ -43,14 +43,14 @@ public class BoardLike {
     // == 연관관계 메서드
     public static BoardLike doLike(Member member, Board board){
         BoardLike like = new BoardLike(member, board);
-        member.getLikeBoards().add(like);
+        // member.getLikeBoards().add(like);
         board.getLikes().add(like);
 
         return like;
     }
 
     public static void undoLike(BoardLike boardLike){
-        boardLike.getMember().getLikeBoards().remove(boardLike);
+        // boardLike.getMember().getLikeBoards().remove(boardLike);
         boardLike.getBoard().getLikes().remove(boardLike);
     }
 }

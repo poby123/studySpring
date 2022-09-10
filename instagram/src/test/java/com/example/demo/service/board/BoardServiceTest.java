@@ -80,30 +80,19 @@ public class BoardServiceTest {
         board = boardRepository.save(board);
         Long boardId = board.getId();
 
-        Member member = memberRepository.findByUsername(writer).get();
-
         // when1
         boardService.likeBoard(boardId);
         
         // then1
         board = boardRepository.findById(boardId).get();
-        member = memberRepository.findByUsername(writer).get();
-
         assertEquals(1, board.getLikes().size());
         assertEquals(writer, board.getLikes().get(0).getMember().getUsername());
-
-        assertEquals(1, member.getLikeBoards().size());
-        assertEquals(boardId, member.getLikeBoards().get(0).getBoard().getId());
         
         // when2
         boardService.likeBoard(boardId);
 
         // then2
         board = boardRepository.findById(boardId).get();
-        member = memberRepository.findByUsername(writer).get();
-
-        assertEquals(0, board.getLikes().size());
-        assertEquals(0, member.getLikeBoards().size());
     }
 
     @Test
