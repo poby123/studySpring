@@ -1,7 +1,6 @@
 package com.example.demo.repository;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,20 +10,17 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.domain.board.entity.Board;
+import com.example.demo.domain.board.entity.BoardLike;
 import com.example.demo.domain.board.entity.QBoardLike;
+import com.example.demo.domain.board.repositoy.BoardLikeRepository;
 import com.example.demo.domain.board.repositoy.BoardRepository;
-import com.example.demo.domain.board.service.BoardService;
 import com.example.demo.domain.member.entity.Member;
 import com.example.demo.domain.member.repositoy.MemberRepository;
-import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-
-import lombok.extern.slf4j.Slf4j;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
 @Transactional
-@Slf4j
 public class BoardLikeTest {
     @Autowired
     MemberRepository memberRepository;
@@ -33,7 +29,7 @@ public class BoardLikeTest {
     BoardRepository boardRepository;
 
     @Autowired
-    BoardService boardService;
+    BoardLikeRepository boardLikeRepository;
 
     @Autowired
     JPAQueryFactory query;
@@ -60,28 +56,15 @@ public class BoardLikeTest {
 
     
     @Test
-    public void registerComment() {
+    public void duplicateExceptionTest() {
         // given
         init();
-        Long boardId = board.getId();
 
         // when
-        boardService.likeBoard(boardId);
+        Long id = boardLikeRepository.save(new BoardLike(member, board)).getId();
+        boardLikeRepository.findById(id);
 
-        // then
-        List<Tuple> result = findBoardLikeDto(List.of(boardId), "poby123");
-
-        for(Tuple t : result){
-            log.info("result : " + t.get(0, Long.class) + " " + t.get(1, String.class));
-        }
-    }
-
-    public List<Tuple> findBoardLikeDto(List<Long> boardIds, String username) {
-        return query
-                .select(qBoardLike.board.id, qBoardLike.member.username)
-                .from(qBoardLike)
-                .leftJoin(qBoardLike.member)
-                .where(qBoardLike.board.id.in(boardIds))
-                .fetch();
+        
+        // boardLikeRepository.save(new BoardLike(member, board));
     }
 }

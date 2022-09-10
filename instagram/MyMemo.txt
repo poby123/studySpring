@@ -157,3 +157,92 @@
         ) 
     order by
         comment0_.comment_id desc limit ?
+
+
+
+
+
+
+
+
+###########################
+
+ select
+        board0_.board_id as col_0_0_,
+        board0_.title as col_1_0_,
+        board0_.content as col_2_0_,
+        member1_.username as col_3_0_,
+        member1_.image as col_4_0_ 
+    from
+        board board0_ cross 
+    join
+        member member1_ 
+    where
+        board0_.member_id=member1_.member_id 
+    order by
+        board0_.board_id desc limit ?
+2022-09-10 10:10:45.120 DEBUG 7504 --- [nio-8080-exec-6] org.hibernate.SQL                        : 
+    select
+        board0_.board_id as board_id1_0_,
+        board0_.content as content2_0_,
+        board0_.created_date_time as created_3_0_,
+        board0_.hit as hit4_0_,
+        board0_.member_id as member_i7_0_,
+        board0_.modified_date_time as modified5_0_,
+        board0_.title as title6_0_ 
+    from
+        board board0_
+2022-09-10 10:10:45.150 DEBUG 7504 --- [nio-8080-exec-6] org.hibernate.SQL                        : 
+    select
+        member0_.member_id as member_i1_4_,
+        member0_.about as about2_4_,
+        member0_.email as email3_4_,
+        member0_.enabled as enabled4_4_,
+        member0_.image as image5_4_,
+        member0_.job as job6_4_,
+        member0_.name as name7_4_,
+        member0_.password as password8_4_,
+        member0_.role as role9_4_,
+        member0_.username as usernam10_4_ 
+    from
+        member member0_ 
+    where
+        member0_.username=?
+2022-09-10 10:10:45.155 DEBUG 7504 --- [nio-8080-exec-6] org.hibernate.SQL                        : 
+    select
+        boardimage0_.board_board_id as col_0_0_,
+        boardimage0_.url as col_1_0_ 
+    from
+        board_image boardimage0_ 
+    where
+        boardimage0_.board_board_id in (
+            ? , ? , ? , ? , ? , ? , ? , ? , ? , ?
+        )
+2022-09-10 10:10:45.159 DEBUG 7504 --- [nio-8080-exec-6] org.hibernate.SQL                        : 
+    select
+        boardlike0_.board_id as col_0_0_,
+        boardlike0_.member_id as col_1_0_ 
+    from
+        board_like boardlike0_ 
+    where
+        boardlike0_.board_id in (
+            ? , ? , ? , ? , ? , ? , ? , ? , ? , ?
+        )
+2022-09-10 10:10:45.171 DEBUG 7504 --- [nio-8080-exec-6] org.hibernate.SQL                        : 
+    select
+        comment0_.comment_id as col_0_0_,
+        comment0_.content as col_1_0_,
+        member1_.username as col_2_0_,
+        member1_.image as col_3_0_,
+        comment0_.board_id as col_4_0_ 
+    from
+        comment comment0_ 
+    inner join
+        member member1_ 
+            on comment0_.member_id=member1_.member_id 
+    where
+        comment0_.board_id in (
+            ? , ? , ? , ? , ? , ? , ? , ? , ? , ?
+        ) 
+    order by
+        comment0_.comment_id desc limit ?

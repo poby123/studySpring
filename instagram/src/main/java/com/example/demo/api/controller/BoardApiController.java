@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.aop.LogExecutionTime;
 import com.example.demo.api.service.BoardApiService;
 import com.example.demo.domain.board.dto.BoardViewDto;
 import com.example.demo.domain.board.service.BoardService;
@@ -37,6 +38,7 @@ public class BoardApiController {
             @ApiResponse(responseCode = "404", description = "NOT FOUND !!"),
             @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR !!")
     })
+    @LogExecutionTime(targetName = "/api/boards")
     @GetMapping
     public ResponseEntity<ResultResponse> getList(@RequestParam(defaultValue = "10", required = false) int size,
             @RequestParam(defaultValue = "0", required = false) int page) {
