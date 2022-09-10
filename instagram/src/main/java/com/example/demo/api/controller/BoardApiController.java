@@ -2,6 +2,7 @@ package com.example.demo.api.controller;
 
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -57,6 +58,19 @@ public class BoardApiController {
     public ResponseEntity<ResultResponse> getBoard(@PathVariable("boardId") long boardId) {
         final BoardViewDto result = boardApiService.getBoardViewDto(boardId);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.FIND_POST_SUCCESS, result));
+    }
+
+    @Operation(summary = "Delete board", description = "게시글을 삭제한다")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK !!"),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST !!"),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND !!"),
+            @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR !!")
+    })
+    @DeleteMapping("/{boardId}")
+    public ResponseEntity<ResultResponse> deleteBoard(@PathVariable("boardId") long boardId) {
+        boardService.remove(boardId);
+        return ResponseEntity.ok(ResultResponse.of(ResultCode.DELETE_POST_SUCCESS));
     }
 
     @Operation(summary = "Do like or dislike board", description = "좋아요 혹은 좋아요 해제")

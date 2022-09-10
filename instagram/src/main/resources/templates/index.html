@@ -14,9 +14,28 @@
       <article th:each="board: ${boards}" class="col card gy-3">
         <div class="card-body p-1">
 
-          <section>
-            <p><a th:text="${board?.writer.username}" th:href="|/member/${board?.writer.username}|"
-                class="board-writer"></a></p>
+          <section class="d-flex justify-content-between p-2">
+            <p>
+              <a th:text="${board?.writer.username}" th:href="|/member/${board?.writer.username}|" class="board-writer">
+              </a>
+            </p>
+            <div class="dropdown">
+              <button class="btn" type="button" th:id="|dropdown-${board?.id}|" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fa-solid fa-ellipsis-vertical"></i>
+              </button>
+              <div class="dropdown-menu" th:aria-labelledby="|dropdown-${board?.id}|">
+                <li><button class="dropdown-item delete-buttons" th:onclick="|deletePost(${board?.id})|">삭제</button></li>
+                <li><button class="dropdown-item report-buttons">신고</button></li>
+              </div>
+            </div>
+            <!-- <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+              Dropdown button
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+              <li><a class="dropdown-item" href="#">Action</a></li>
+              <li><a class="dropdown-item" href="#">Another action</a></li>
+              <li><a class="dropdown-item" href="#">Something else here</a></li>
+            </ul> -->
           </section>
 
           <!-- image carousel -->

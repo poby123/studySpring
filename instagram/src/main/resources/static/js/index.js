@@ -9,6 +9,31 @@ cardContents.forEach((card) => {
 })
 
 /**
+ * Delete posts
+ */
+function deletePost(boardId) {
+    console.log('delete : ', boardId);
+    fetch(`http://wj-code-server.com:8080/api/boards/${boardId}`, {
+        method: 'DELETE',
+    })
+        .then((response) => {
+            if (response.ok) {
+                return response.json();
+            }
+            throw new Error('Failed to delete post !!');
+        })
+        .then((data) => {
+            console.log('성공:', data);
+            // redirect
+            // 
+        })
+        .catch((error) => {
+            console.error('실패:', error);
+            // toast
+        });
+}
+
+/**
  * Add a new comment to list dynamically.
  */
 function addCommentNode(comment) {
@@ -100,15 +125,15 @@ function boardLikeOrDisLike(e) {
     $.ajax({
         type: "PUT",
         url: `http://wj-code-server.com:8080/api/boards/like/${boardId}`,
-        th:href="|/api/boards/like/${board?.id}|",
-        success: ({data}) => {
+        th: href = "|/api/boards/like/${board?.id}|",
+        success: ({ data }) => {
             iconNode.classList.toggle('fa-regular');
             iconNode.classList.toggle('fa-solid');
 
-            if(data){
+            if (data) {
                 numOfLikeNode.innerText = Number(numOfLikeNode.innerText) + 1;
             }
-            else{
+            else {
                 numOfLikeNode.innerText = Number(numOfLikeNode.innerText) - 1;
             }
         },
