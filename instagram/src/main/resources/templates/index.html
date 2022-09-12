@@ -7,6 +7,7 @@
 <body>
   <header th:replace="fragments/bodyHeader :: bodyHeader">
   </header>
+  <button type="button" class="btn btn-primary" id="liveToastBtn" onclick="appendToast()">Show live toast</button>
   <section class="border">
     <div class="container row gx-0 row-cols-1 row-cols-md-2 row-cols-lg-3 mx-auto border">
 
@@ -20,11 +21,13 @@
               </a>
             </p>
             <div class="dropdown">
-              <button class="btn" type="button" th:id="|dropdown-${board?.id}|" data-bs-toggle="dropdown" aria-expanded="false">
+              <button class="btn" type="button" th:id="|dropdown-${board?.id}|" data-bs-toggle="dropdown"
+                aria-expanded="false">
                 <i class="fa-solid fa-ellipsis-vertical"></i>
               </button>
               <div class="dropdown-menu" th:aria-labelledby="|dropdown-${board?.id}|">
-                <li><button class="dropdown-item delete-buttons" th:onclick="|deletePost(${board?.id})|">삭제</button></li>
+                <li><button class="dropdown-item delete-buttons" th:onclick="|deletePost(${board?.id})|">삭제</button>
+                </li>
                 <li><button class="dropdown-item report-buttons">신고</button></li>
               </div>
             </div>
@@ -46,9 +49,21 @@
           <section th:replace="fragments/boardContent :: boardContent">
           </section>
 
+
         </div>
       </article>
     </div>
+  </section>
+  <section class="toast-section">
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+      <Toast/>
+    </div>
+    <p>
+      This is the second comment.
+      <!-- We will put our React component inside this div. -->
+      <div class="like_button_container" data-commentid="2"></div>
+    </p>
+
   </section>
   <footer th:replace="fragments/footer :: footer">
 
