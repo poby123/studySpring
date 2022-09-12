@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -80,7 +80,7 @@ public class BoardApiController {
             @ApiResponse(responseCode = "404", description = "NOT FOUND !!"),
             @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR !!")
     })
-    @PutMapping("/like/{boardId}")
+    @PostMapping("/like/{boardId}")
     public ResponseEntity<ResultResponse> toggleBoardLike(@PathVariable("boardId") long boardId) {
         boolean isBoardLiked = boardService.likeBoard(boardId);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.LIKE_POST_SUCCESS, isBoardLiked));

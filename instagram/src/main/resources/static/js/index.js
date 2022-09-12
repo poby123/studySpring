@@ -1,12 +1,51 @@
+function appendToast() {
+    const toastContainer = $('.toast-container')[0];
+    console.log(toastContainer);
+    $(`
+    <div id="liveToast" class="toast hide text-white bg-primary" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+          <strong class="me-auto">Bootstrap</strong>
+          <small>11 mins ago</small>
+          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close" onclick="hideToast(event)"></button>
+        </div>
+        <div class="toast-body">
+          Hello, world! This is a toast message.
+        </div>
+    </div>
+    `).append(toastContainer);
+}
+
+/**
+ * Hide toast
+ */
+function showToast(e) {
+    const toast = document.getElementById('liveToast');
+    toast.classList.toggle('hide');
+    toast.classList.toggle('fade');
+    toast.classList.toggle('show');
+}
+
+/**
+ * Hide toast
+ */
+function hideToast(e) {
+    console.log(e.currentTarget.parentNode.parentNode);
+    const toast = e.currentTarget.parentNode.parentNode;
+    toast.classList.toggle('hide');
+    toast.classList.toggle('fade');
+    toast.classList.toggle('show');
+    // e.currentTarget.classList.append('fade hide');
+}
+
 /**
  * Toggle board contents truncation.
  */
 const cardContents = document.querySelectorAll('.text-truncate');
-cardContents.forEach((card) => {
-    card.addEventListener('click', (e) => {
+cardContents.forEach(card => {
+    card.addEventListener('click', e => {
         e.currentTarget.classList.toggle('text-truncate');
-    })
-})
+    });
+});
 
 /**
  * Delete posts
@@ -14,23 +53,20 @@ cardContents.forEach((card) => {
 function deletePost(boardId) {
     console.log('delete : ', boardId);
     fetch(`http://wj-code-server.com:8080/api/boards/${boardId}`, {
-        method: 'DELETE',
-    })
-        .then((response) => {
-            if (response.ok) {
-                return response.json();
-            }
-            throw new Error('Failed to delete post !!');
-        })
-        .then((data) => {
-            console.log('성공:', data);
-            // redirect
-            // 
-        })
-        .catch((error) => {
-            console.error('실패:', error);
-            // toast
-        });
+        method: 'DELETE'
+    }).then(response => {
+        if (response.ok) {
+            return response.json();
+        }
+        throw new Error('Failed to delete post !!');
+    }).then(data => {
+        console.log('성공:', data);
+        // redirect
+        // 
+    }).catch(error => {
+        console.error('실패:', error);
+        // toast
+    });
 }
 
 /**
@@ -44,11 +80,11 @@ function addCommentNode(comment) {
 
     const writerText = document.createElement('a');
     writerText.setAttribute('href', `/member/${comment.member.username}`);
-    writerText.style = 'color: white;'
+    writerText.style = 'color: white;';
     writerText.innerText = `${comment.member.username}`;
 
     const writerSection = document.createElement('p');
-    writerSection.appendChild(writerText)
+    writerSection.appendChild(writerText);
 
     const commentText = document.createElement('p');
     commentText.classList.add('align-middle', 'h-100');
@@ -66,8 +102,7 @@ function setShowFailedAlert(show) {
     const alert = document.querySelector('#comment-save-failed-alert');
     if (show) {
         alert.classList.remove('d-none');
-    }
-    else {
+    } else {
         alert.classList.add('d-none');
     }
 }
@@ -84,7 +119,7 @@ function commentSave(e) {
     const saveDto = {
         'boardId': boardId,
         'content': contentNode.value
-    }
+    };
 
     $.ajax({
         type: "POST",
@@ -92,25 +127,25 @@ function commentSave(e) {
         data: JSON.stringify(saveDto),
         dataType: 'json',
         contentType: 'application/json',
-        success: (data) => {
+        success: ({ data }) => {
+            console.log(data);
             setShowFailedAlert(false);
             addCommentNode(data);
-            contentNode.value = ''
+            contentNode.value = '';
         },
-        error: (err) => {
+        error: err => {
             setShowFailedAlert(true);
         }
     });
 }
 
-
 /**
  * Toggle board contents truncation.
  */
 const boardLikeButtons = document.querySelectorAll('.board-like-button');
-boardLikeButtons.forEach((b) => {
+boardLikeButtons.forEach(b => {
     b.addEventListener('click', boardLikeOrDisLike);
-})
+});
 
 /**
  * 
@@ -123,7 +158,7 @@ function boardLikeOrDisLike(e) {
     const numOfLikeNode = document.querySelector(`#numOfLike-${boardId}`);
 
     $.ajax({
-        type: "PUT",
+        type: "POST",
         url: `http://wj-code-server.com:8080/api/boards/like/${boardId}`,
         th: href = "|/api/boards/like/${board?.id}|",
         success: ({ data }) => {
@@ -132,12 +167,11 @@ function boardLikeOrDisLike(e) {
 
             if (data) {
                 numOfLikeNode.innerText = Number(numOfLikeNode.innerText) + 1;
-            }
-            else {
+            } else {
                 numOfLikeNode.innerText = Number(numOfLikeNode.innerText) - 1;
             }
         },
-        error: (err) => {
+        error: err => {
             console.log(err);
         }
     });
