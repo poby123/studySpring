@@ -1,15 +1,29 @@
 # README.md
-## Project progress document
+## For Me
+### Project progress document
 - https://bit.ly/3ezjtHP
 
-## Server Links
+### Relative Links
 개발환경에서 평소에는 서버를 꺼놓기 때문에 내가 개발할 때만 접속된다. 나 개발하기 편하라고 써놓은 링크다:)
-### Application
+#### Application
 - http://wj-code-server.com:8080/
-### H2 DB
+#### H2 DB
 - http://wj-code-server.com:8082
-### Swagger
+#### Swagger
 - http://wj-code-server.com:8080/swagger-ui/index.html
+#### Bootstrap 5.0
+- https://getbootstrap.com/docs/5.0/components/toasts/
+
+### Commands
+#### React jsx babel
+```
+cd
+$ cd src/main/resources
+$ npx babel --watch src --out-dir ./static/js --presets react-app/prod
+```
+#### References 
+https://ko.reactjs.org/docs/add-react-to-a-website.html
+
 
 ---
 
