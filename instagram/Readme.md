@@ -15,13 +15,23 @@
 - https://getbootstrap.com/docs/5.0/components/toasts/
 
 ### Commands
+#### EC2 Port forwarding
+##### References 
+https://velog.io/@jinseoit/ec2-port-forward
+
 #### React jsx babel
 ```
 cd
 $ cd src/main/resources
 $ npx babel --watch src --out-dir ./static/js --presets react-app/prod
 ```
-#### References 
+
+#### Run Fake Server
+```
+json-server --watch ./fake-server/db.json --port 8092 --host 0.0.0.0
+```
+
+##### References 
 https://ko.reactjs.org/docs/add-react-to-a-website.html
 
 

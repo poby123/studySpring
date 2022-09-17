@@ -1,0 +1,9 @@
+{
+    "/api/boards": "/boards",
+    "/api/boards/:boardId": "/boards/:boardId",
+
+    "/api/comment/": "/comment",
+    "/api/boards/like/": "/likes",
+    "/api/boards/like/:boardId": "/likes/:boardId",
+    "/api/test": "/test"
+}

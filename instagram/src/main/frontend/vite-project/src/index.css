@@ -1,0 +1,23 @@
+body{
+    margin: 0;
+    padding: 0;
+}
+
+li{
+    list-style: none;
+}
+
+a{
+    text-decoration: none;
+    color: black;
+}
+
+a:hover{
+    cursor: pointer;
+}
+
+button{
+    background: none;
+    border: none;
+    outline: none;
+}
