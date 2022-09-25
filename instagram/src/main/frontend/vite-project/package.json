@@ -4,6 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "db":"/root/setup/h2/bin/h2.sh -webAllowOthers",
+    "server": "cd /root/workspace/studySpring/instagram; gradle bootRun;",
     "dev": "vite --port 8090 --host",
     "build": "vite build",
     "preview": "vite preview"

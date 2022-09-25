@@ -24,9 +24,9 @@ import com.example.demo.domain.member.repositoy.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
 
-@Controller
+// @Controller
+// @RequestMapping("/")
 @RequiredArgsConstructor
-@RequestMapping("/")
 public class BoardController {
 
     private final MemberRepository memberRepository;

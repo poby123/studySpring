@@ -19,13 +19,30 @@ export default function BoardList(props) {
             .catch(error => console.log(error))
     }, []);
 
+    useEffect(() => {
+        handleScrollPosition();
+    }, [boards])
+
+    const handleScrollPosition = () => {
+        console.log('set scorll position : ', scroll);
+        const scrollPosition = sessionStorage.getItem("scrollPosition");
+        if (scrollPosition) {
+            window.scrollTo({left: 0, top: parseInt(scrollPosition), "behavior": 'instant'});
+        }
+    };
+
+    const handleClick = e => {
+        console.log('save positon');
+        sessionStorage.setItem("scrollPosition", window.pageYOffset);
+    };
+
     // const boardItems = boards;
 
     const boardItems = boards && boards.map((board) => {
         return <article className="col card gy-3" key={board.id}>
             <div className="card-body p-2">
                 <BoardHeader board={board} />
-                <ImageCarousel board={board} />
+                <ImageCarousel board={board} onClickLink={handleClick}/>
                 <BoardContent board={board} />
             </div>
         </article>

@@ -24,7 +24,7 @@ import com.example.demo.domain.member.service.UserDetailsServiceImpl;
 
 import lombok.RequiredArgsConstructor;
 
-@Controller
+// @Controller
 @RequiredArgsConstructor
 public class MemberController {
 

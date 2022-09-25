@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-export default function ImageCarousel({ board }) {
+export default function ImageCarousel({ board, onClickLink }) {
     const { id, images } = board;
 
     const carouselInnerItems = images.map((image, index) => {
@@ -13,7 +13,7 @@ export default function ImageCarousel({ board }) {
         <div className="card-img-top">
             <div id={`carouselExampleControls-${id}`} className="carousel slide" data-bs-ride="carousel"
                 data-bs-touch="true" data-bs-interval="false">
-                <Link to={`/boards/${id}`} params={{ id: id }}>
+                <Link to={`/boards/${id}`} params={{ id: id }} onClick={onClickLink}>
                     <div className="carousel-inner">
                         {carouselInnerItems}
                     </div>
