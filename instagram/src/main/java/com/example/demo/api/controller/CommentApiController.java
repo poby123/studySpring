@@ -18,7 +18,7 @@ import com.example.demo.domain.board.dto.CommentViewDto;
 import com.example.demo.domain.board.entity.Comment;
 import com.example.demo.domain.board.service.CommentService;
 import com.example.demo.domain.member.entity.Member;
-import com.example.demo.domain.member.service.UserDetailsServiceImpl;
+import com.example.demo.domain.member.service.CustomUserDetailsService;
 import com.example.demo.global.exception.BusinessException;
 import com.example.demo.global.exception.ErrorCode;
 import com.example.demo.global.result.ResultCode;
@@ -35,7 +35,7 @@ import lombok.RequiredArgsConstructor;
 public class CommentApiController {
 
     private final CommentService commentService;
-    private final UserDetailsServiceImpl userDetailsService;
+    private final CustomUserDetailsService userDetailsService;
 
     @Operation(summary = "Save comment", description = "댓글을 저장한다.")
     @ApiResponses({

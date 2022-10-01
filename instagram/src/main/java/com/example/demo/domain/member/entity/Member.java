@@ -1,13 +1,12 @@
 package com.example.demo.domain.member.entity;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -39,7 +38,7 @@ public class Member {
 
     @Column(nullable = false)
     private String email;
-    
+
     private String image;
 
     private boolean enabled;
@@ -48,8 +47,8 @@ public class Member {
 
     private String about;
 
-    @Enumerated(EnumType.STRING)
-    private Role role;
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<MemberRole> roles = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Board> boards = new ArrayList<>();
@@ -71,14 +70,13 @@ public class Member {
         this.about = "";
         this.job = "";
         this.enabled = true;
-        this.role = Role.ROLE_MEMBER;
+        this.roles = Arrays.asList(new MemberRole(Role.ROLE_MEMBER, this));
     }
 
     /* 연관관계 메서드 */
 
-
     /* setter */
-    public void setPassword(String password) {
+    public void setEncryptedPassword(String password) {
         this.password = password;
     }
 
@@ -102,7 +100,7 @@ public class Member {
         this.image = image;
     }
 
-    public void setEnabled(boolean enabled){
+    public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
 }

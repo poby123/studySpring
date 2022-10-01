@@ -13,6 +13,12 @@
 - http://wj-code-server.com:8080/swagger-ui/index.html
 #### Bootstrap 5.0
 - https://getbootstrap.com/docs/5.0/components/toasts/
+#### Clone instagram
+- https://github.com/poby123/Spring_instagram-clone/blob/develop/src/main/java/cloneproject/Instagram/global/error/ErrorCode.java
+#### Redis
+#### Install
+- https://www.psjco.com/26
+
 
 ### Commands
 #### EC2 Port forwarding

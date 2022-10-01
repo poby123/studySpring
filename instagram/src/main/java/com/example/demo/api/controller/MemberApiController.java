@@ -17,12 +17,13 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api")
 @RequiredArgsConstructor
 public class MemberApiController {
-    
+
     private final MemberRepository memberRepository;
 
     @GetMapping("/member/{memberUsername}")
     public String getMember(@PathVariable("memberUsername") String username, Model model) {
-        Member member = memberRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 사용자입니다."));
+        Member member = memberRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 사용자입니다."));
         MemberProfileViewDto dto = MemberProfileViewDto.of(member);
         model.addAttribute("member", dto);
 

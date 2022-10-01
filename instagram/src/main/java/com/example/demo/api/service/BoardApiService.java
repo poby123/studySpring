@@ -21,7 +21,7 @@ import com.example.demo.domain.board.repositoy.BoardRepository;
 import com.example.demo.domain.board.repositoy.querydsl.BoardImageQueryRepository;
 import com.example.demo.domain.board.service.CommentService;
 import com.example.demo.domain.member.entity.Member;
-import com.example.demo.domain.member.service.UserDetailsServiceImpl;
+import com.example.demo.domain.member.service.CustomUserDetailsService;
 import com.example.demo.global.exception.types.BoardNotFoundException;
 import com.querydsl.core.Tuple;
 
@@ -36,7 +36,7 @@ public class BoardApiService {
     private final BoardImageQueryRepository boardImageRepository;
     private final BoardLikeRepository boardLikeRepository;
     private final CommentService commentService;
-    private final UserDetailsServiceImpl memberService;
+    private final CustomUserDetailsService memberService;
 
     public BoardViewDto getBoardViewDto(Long boardId){
         BoardViewDto dto = boardRepository.findBoardViewDto(boardId).orElseThrow(BoardNotFoundException::new);
