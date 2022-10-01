@@ -7,6 +7,8 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -47,8 +49,8 @@ public class Member {
 
     private String about;
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<MemberRole> roles = new ArrayList<>();
+    @Enumerated(EnumType.STRING)
+    private Role role = Role.ROLE_MEMBER;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Board> boards = new ArrayList<>();
@@ -70,7 +72,7 @@ public class Member {
         this.about = "";
         this.job = "";
         this.enabled = true;
-        this.roles = Arrays.asList(new MemberRole(Role.ROLE_MEMBER, this));
+        this.role = Role.ROLE_MEMBER;
     }
 
     /* 연관관계 메서드 */

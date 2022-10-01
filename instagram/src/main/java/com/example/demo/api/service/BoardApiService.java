@@ -20,8 +20,7 @@ import com.example.demo.domain.board.repositoy.BoardLikeRepository;
 import com.example.demo.domain.board.repositoy.BoardRepository;
 import com.example.demo.domain.board.repositoy.querydsl.BoardImageQueryRepository;
 import com.example.demo.domain.board.service.CommentService;
-import com.example.demo.domain.member.entity.Member;
-import com.example.demo.domain.member.service.CustomUserDetailsService;
+import com.example.demo.global.config.security.util.AuthUtil;
 import com.example.demo.global.exception.types.BoardNotFoundException;
 import com.querydsl.core.Tuple;
 
@@ -36,15 +35,15 @@ public class BoardApiService {
     private final BoardImageQueryRepository boardImageRepository;
     private final BoardLikeRepository boardLikeRepository;
     private final CommentService commentService;
-    private final CustomUserDetailsService memberService;
+    private final AuthUtil authUtil;
 
     public BoardViewDto getBoardViewDto(Long boardId){
         BoardViewDto dto = boardRepository.findBoardViewDto(boardId).orElseThrow(BoardNotFoundException::new);
 
-        Member signedUser = memberService.getMember("poby123").get();
+        Long signedUserId = authUtil.getLoginMemberId();
 
         setBoardImages(dto);
-        setBoardLikes(dto, signedUser.getId());
+        setBoardLikes(dto, signedUserId);
         setBoardComment(dto);
 
         return dto;
@@ -57,10 +56,10 @@ public class BoardApiService {
         List<BoardViewDto> dtos = postDtoPage.getContent();
         List<Long> boardIds = dtos.stream().map(d -> d.getId()).collect(Collectors.toUnmodifiableList());
 
-        Member signedUser = memberService.getMember("poby123").get();
+        Long signedUserId = authUtil.getLoginMemberId();
 
         setBoardImages(dtos, boardIds);
-        setBoardLikes(dtos, boardIds, signedUser.getId());
+        setBoardLikes(dtos, boardIds, signedUserId);
         setBoardComments(dtos, boardIds);
 
         return postDtoPage;

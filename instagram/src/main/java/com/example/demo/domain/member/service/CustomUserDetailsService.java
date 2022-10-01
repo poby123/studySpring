@@ -82,7 +82,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 	}
 
 	private UserDetails createUserDetails(Member member) {
-		final GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(member.getRoles().toString());
+		final GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(member.getRole().toString());
 		// TOKEN, AUTHENTICATION 에 넣을 값 (ex. username, id)
 		return new User(
 			String.valueOf(member.getId()),

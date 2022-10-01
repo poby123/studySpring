@@ -58,10 +58,12 @@ public class JwtUtil {
 
 	public Authentication getAuthentication(String token) throws BusinessException {
 		Claims claims = parseClaims(token);
-		final List<SimpleGrantedAuthority> authorities = Arrays.stream(
-				claims.get(CLAIM_AUTHORITIES_KEY).toString().split(","))
-			.map(SimpleGrantedAuthority::new)
-			.collect(Collectors.toList());
+		final List<SimpleGrantedAuthority> authorities = 
+			Arrays
+				.stream(claims.get(CLAIM_AUTHORITIES_KEY).toString().split(","))
+				.map(SimpleGrantedAuthority::new)
+				.collect(Collectors.toList());
+				
 		final User principal = new User((String)claims.get(CLAIM_MEMBER_ID_KEY), "", authorities);
 
 		return JwtAuthenticationToken.of(principal, token, authorities);
@@ -101,7 +103,7 @@ public class JwtUtil {
 	}
 
 	public JwtDto generateJwtDto(Member member) {
-		final String authoritiesString = member.getRoles().toString();
+		final String authoritiesString = member.getRole().toString();
 		long currentTime = (new Date()).getTime();
 
 		final Date accessTokenExpiresIn = new Date(currentTime + ACCESS_TOKEN_EXPIRES);

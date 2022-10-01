@@ -18,8 +18,8 @@ import com.example.demo.domain.board.service.S3Service;
 import com.example.demo.domain.member.dto.MemberDto.LoginRequest;
 import com.example.demo.domain.member.dto.RegisterRequestDto;
 import com.example.demo.domain.member.entity.Member;
-import com.example.demo.domain.member.entity.SecurityUser;
 import com.example.demo.domain.member.service.CustomUserDetailsService;
+import com.example.demo.domain.member.service.MemberService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -27,7 +27,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MemberController {
 
-    private final CustomUserDetailsService userDetailsService;
+    private final MemberService memberService;
 
     @GetMapping("/login")
     public String loginForm(Model model) {
@@ -57,16 +57,16 @@ public class MemberController {
 
     @GetMapping("/member/{memberUsername}")
     public String getMember(@PathVariable("memberUsername") String username, Model model) {
-        Member member = userDetailsService.getMember(username).orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 사용자입니다."));
+        Member member = memberService.getMember(username).orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 사용자입니다."));
         model.addAttribute("member", member);
         model.addAttribute("s3Domain", S3Service.CLOUD_FRONT_DOMAIN_NAME);
 
         return "member/profile";
     }
 
-    @PutMapping("/follow/{memberUsername}")
-    public void follow(@AuthenticationPrincipal SecurityUser principal, @PathVariable("memberUsername") String username){
-        userDetailsService.follow(principal.getMember(), username);
-    }
+    // @PutMapping("/follow/{memberUsername}")
+    // public void follow(@AuthenticationPrincipal SecurityUser principal, @PathVariable("memberUsername") String username){
+    //     memberService.follow(principal.getMember(), username);
+    // }
 
 }

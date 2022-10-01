@@ -18,9 +18,7 @@ import com.example.demo.domain.board.dto.CommentViewDto;
 import com.example.demo.domain.board.entity.Comment;
 import com.example.demo.domain.board.service.CommentService;
 import com.example.demo.domain.member.entity.Member;
-import com.example.demo.domain.member.service.CustomUserDetailsService;
-import com.example.demo.global.exception.BusinessException;
-import com.example.demo.global.exception.ErrorCode;
+import com.example.demo.global.config.security.util.AuthUtil;
 import com.example.demo.global.result.ResultCode;
 import com.example.demo.global.result.ResultResponse;
 
@@ -35,7 +33,7 @@ import lombok.RequiredArgsConstructor;
 public class CommentApiController {
 
     private final CommentService commentService;
-    private final CustomUserDetailsService userDetailsService;
+    private final AuthUtil authUtil;
 
     @Operation(summary = "Save comment", description = "댓글을 저장한다.")
     @ApiResponses({
@@ -46,8 +44,7 @@ public class CommentApiController {
     })
     @PostMapping
     public ResponseEntity<ResultResponse> save(@RequestBody @Valid CommentSaveDto commentSaveDto) {
-        Member member = userDetailsService.getMember("poby123")
-                .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
+        Member member = authUtil.getLoginMember();
 
         Comment comment = commentService.save(member, commentSaveDto);
         CommentViewDto saveResultComment =  CommentViewDto.of(comment);

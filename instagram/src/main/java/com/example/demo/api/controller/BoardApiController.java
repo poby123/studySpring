@@ -2,7 +2,6 @@ package com.example.demo.api.controller;
 
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,7 +14,6 @@ import com.example.demo.aop.LogExecutionTime;
 import com.example.demo.api.service.BoardApiService;
 import com.example.demo.domain.board.dto.BoardViewDto;
 import com.example.demo.domain.board.service.BoardService;
-import com.example.demo.domain.member.entity.Member;
 import com.example.demo.global.result.ResultCode;
 import com.example.demo.global.result.ResultResponse;
 
@@ -45,9 +43,8 @@ public class BoardApiController {
     })
     @LogExecutionTime(targetName = "/api/boards")
     @GetMapping
-    public ResponseEntity<ResultResponse> getList(@AuthenticationPrincipal Member member,@RequestParam(defaultValue = "10", required = false) int size,
+    public ResponseEntity<ResultResponse> getList(@RequestParam(defaultValue = "10", required = false) int size,
             @RequestParam(defaultValue = "0", required = false) int page) {
-        log.info("member : {}", member.getUsername());
         final Page<BoardViewDto> result = boardApiService.getBoardViewDtoPage(size, page);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.FIND_POST_PAGE_SUCCESS, result));
     }

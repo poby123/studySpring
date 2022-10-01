@@ -55,24 +55,35 @@ import lombok.extern.slf4j.Slf4j;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private static final String[] AUTH_WHITELIST_SWAGGER = {
-		/* swagger v2 */
-		"/v2/api-docs",
-		"/swagger-resources",
-		"/swagger-resources/**",
-		"/configuration/ui",
-		"/configuration/security",
-		"/swagger-ui.html",
-		"/webjars/**",
-		
-		/* swagger v3 */
-		"/v3/api-docs/**",
-		"/swagger-ui/**"};
+			/* swagger v2 */
+			"/v2/api-docs",
+			"/swagger-resources",
+			"/swagger-resources/**",
+			"/configuration/ui",
+			"/configuration/security",
+			"/swagger-ui.html",
+			"/webjars/**",
 
-	private static final String[] AUTH_WHITELIST_STATIC = {"/static/css/**", "/static/js/**", "*.ico"};
-	private static final String[] AUTH_WHITELIST = {"/login", "/login/recovery", "/accounts", "/**/without",
-		"/accounts/password/email",
-		"/accounts/password/reset", "/reissue", "/accounts/email", "/accounts/check", "/logout/only/cookie", "/ws-connection/**"};
-        
+			/* swagger v3 */
+			"/v3/api-docs/**",
+			"/swagger-ui/**"
+	};
+
+	private static final String[] AUTH_WHITELIST_STATIC = { "/static/css/**", "/static/js/**", "*.ico" };
+	private static final String[] AUTH_WHITELIST = { 
+			"/login", 
+			"/login/recovery", 
+			"/accounts", 
+			"/accounts/check", 
+			"/accounts/email", 
+			"/accounts/password/email",
+			"/accounts/password/reset", 
+			"/reissue", 
+			"/logout/only/cookie",
+			"/**/without",
+			"/ws-connection/**" 
+	};
+
 	private final JwtUtil jwtUtil;
 	private final ResetPasswordCodeUserDetailService resetPasswordCodeUserDetailService;
 	private final CustomUserDetailsService jwtUserDetailsService;
@@ -128,9 +139,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Bean
 	public CustomUsernamePasswordAuthenticationFilter customUsernamePasswordAuthenticationFilter()
-		throws Exception {
-		final CustomUsernamePasswordAuthenticationFilter filter =
-			new CustomUsernamePasswordAuthenticationFilter();
+			throws Exception {
+		final CustomUsernamePasswordAuthenticationFilter filter = new CustomUsernamePasswordAuthenticationFilter();
 		filter.setAuthenticationManager(super.authenticationManager());
 		filter.setAuthenticationSuccessHandler(customAuthenticationSuccessHandler);
 		filter.setAuthenticationFailureHandler(customAuthenticationFailureHandler);
@@ -158,9 +168,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.authenticationProvider(jwtAuthenticationProvider)
-			.authenticationProvider(resetPasswordCodeAuthenticationProvider())
-			.authenticationProvider(reissueAuthenticationProvider)
-			.authenticationProvider(daoAuthenticationProvider());
+				.authenticationProvider(resetPasswordCodeAuthenticationProvider())
+				.authenticationProvider(reissueAuthenticationProvider)
+				.authenticationProvider(daoAuthenticationProvider());
 	}
 
 	@Bean
@@ -190,26 +200,26 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		configureCustomBeans();
 
 		http.exceptionHandling()
-			.authenticationEntryPoint(customAuthenticationEntryPoint)
-			.accessDeniedHandler(customAccessDeniedHandler);
+				.authenticationEntryPoint(customAuthenticationEntryPoint)
+				.accessDeniedHandler(customAccessDeniedHandler);
 		http.sessionManagement()
-			.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
 		http.logout().disable()
-			.formLogin().disable()
-			.httpBasic().disable();
+				.formLogin().disable()
+				.httpBasic().disable();
 
 		http.cors()
-			.configurationSource(configurationSource())
-			.and()
-			.csrf()
-			.disable()
-			.authorizeRequests()
-			.requestMatchers(CorsUtils::isPreFlightRequest)
-			.permitAll()
-			.antMatchers(AUTH_WHITELIST)
-			.permitAll()
-			.anyRequest().hasAuthority("ROLE_USER");
+				.configurationSource(configurationSource())
+				.and()
+				.csrf()
+				.disable()
+				.authorizeRequests()
+				.requestMatchers(CorsUtils::isPreFlightRequest)
+				.permitAll()
+				.antMatchers(AUTH_WHITELIST)
+				.permitAll()
+				.anyRequest().hasAuthority("ROLE_MEMBER");
 
 		http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 		http.addFilterBefore(customExceptionHandleFilter, JwtAuthenticationFilter.class);
