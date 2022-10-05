@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     proxy: {
       // '/api': 'http://wj-code-server.com:8092'
-      '/api': 'http://wj-code-server.com:8080'
+      '/api': 'http://wj-code-server.com:8080/',
     }
   }
 })

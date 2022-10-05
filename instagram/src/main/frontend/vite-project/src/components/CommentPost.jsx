@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useState } from 'react';
+import loginStateInstance from "../states/LoginState";
 
 export function CommentPost({ boardId, onPostComment }) {
     const [comment, setComment] = useState('');
@@ -12,7 +13,7 @@ export function CommentPost({ boardId, onPostComment }) {
             'content': comment
         };
 
-        axios.post("/api/comment", commentDto)
+        axios.post(`/api/comment`, commentDto, { headers: { 'Authorization': 'Bearer ' + loginStateInstance.getToken() }, baseURL: 'http://wj-code-server.com:8080/' })
             .then((response) => {
                 onPostComment(response.data.data);
                 setComment('');

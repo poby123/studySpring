@@ -70,32 +70,35 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	};
 
 	private static final String[] AUTH_WHITELIST_STATIC = { "/static/css/**", "/static/js/**", "*.ico" };
-	private static final String[] AUTH_WHITELIST = { 
-			"/login", 
-			"/login/recovery", 
-			"/accounts", 
-			"/accounts/check", 
-			"/accounts/email", 
+	private static final String[] AUTH_WHITELIST = {
+			"/login",
+			"/login/recovery",
+			"/accounts",
+			"/accounts/check",
+			"/accounts/email",
 			"/accounts/password/email",
-			"/accounts/password/reset", 
-			"/reissue", 
+			"/accounts/password/reset",
+			"/reissue",
 			"/logout/only/cookie",
 			"/**/without",
-			"/ws-connection/**" 
+			"/ws-connection/**"
 	};
 
 	private final JwtUtil jwtUtil;
 	private final ResetPasswordCodeUserDetailService resetPasswordCodeUserDetailService;
 	private final CustomUserDetailsService jwtUserDetailsService;
 	private final EmailCodeService emailCodeService;
+
 	// Provider
 	private final JwtAuthenticationProvider jwtAuthenticationProvider;
 	private final ReissueAuthenticationProvider reissueAuthenticationProvider;
+
 	// Handler
 	private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 	private final CustomAccessDeniedHandler customAccessDeniedHandler;
 	private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
 	private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
+
 	// Filter
 	private final CustomExceptionHandleFilter customExceptionHandleFilter;
 
@@ -138,8 +141,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
 	@Bean
-	public CustomUsernamePasswordAuthenticationFilter customUsernamePasswordAuthenticationFilter()
-			throws Exception {
+	public CustomUsernamePasswordAuthenticationFilter customUsernamePasswordAuthenticationFilter() throws Exception {
 		final CustomUsernamePasswordAuthenticationFilter filter = new CustomUsernamePasswordAuthenticationFilter();
 		filter.setAuthenticationManager(super.authenticationManager());
 		filter.setAuthenticationSuccessHandler(customAuthenticationSuccessHandler);
@@ -200,14 +202,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		configureCustomBeans();
 
 		http.exceptionHandling()
-				.authenticationEntryPoint(customAuthenticationEntryPoint)
-				.accessDeniedHandler(customAccessDeniedHandler);
-		http.sessionManagement()
-				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+			.authenticationEntryPoint(customAuthenticationEntryPoint)
+			.accessDeniedHandler(customAccessDeniedHandler);
+
+		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
 		http.logout().disable()
-				.formLogin().disable()
-				.httpBasic().disable();
+			.formLogin().disable()
+			.httpBasic().disable();
 
 		http.cors()
 				.configurationSource(configurationSource())

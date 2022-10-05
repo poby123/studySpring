@@ -1,7 +1,8 @@
-import { useState } from "react";
 import axios from 'axios';
+import { useState } from "react";
+import loginStateInstance from "../states/LoginState";
 
-export default function BoardContent({board}) {
+export default function BoardContent({ board }) {
 
     const [currentMemberLike, setCurrentMemberLike] = useState(board.like.currentMemberLike);
     const [numberOfLikes, setNumberOfLikes] = useState(board.like.numberOfLikes);
@@ -11,8 +12,11 @@ export default function BoardContent({board}) {
         currentMemberLike ? setNumberOfLikes(numberOfLikes - 1) : setNumberOfLikes(numberOfLikes + 1);
         setCurrentMemberLike(!currentMemberLike);
 
-        axios.post(`/api/boards/like/${board.id}`)
-            .catch(error => console.error(error))
+        // axios.post(`/api/boards/like/${board.id}`)
+        //     .catch(error => console.error(error))
+
+        axios.post(`/api/boards/like/${board.id}`, null, { headers: { 'Authorization': 'Bearer ' + loginStateInstance.getToken() }, baseURL: 'http://wj-code-server.com:8080/' })
+        .catch(e => console.log(e));
     }
 
     const onClickBoardContent = () => {

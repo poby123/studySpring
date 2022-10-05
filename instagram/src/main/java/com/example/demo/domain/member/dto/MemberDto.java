@@ -65,13 +65,4 @@ public class MemberDto {
             return ret;
         }
     }
-
-
-    @Getter
-    @Setter
-    public static class LoginRequest {
-        private String username;
-        private String password;
-        private Role role;
-    }
 }

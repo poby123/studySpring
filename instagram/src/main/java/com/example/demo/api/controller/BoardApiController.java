@@ -14,6 +14,8 @@ import com.example.demo.aop.LogExecutionTime;
 import com.example.demo.api.service.BoardApiService;
 import com.example.demo.domain.board.dto.BoardViewDto;
 import com.example.demo.domain.board.service.BoardService;
+import com.example.demo.domain.member.entity.Member;
+import com.example.demo.global.config.security.util.AuthUtil;
 import com.example.demo.global.result.ResultCode;
 import com.example.demo.global.result.ResultResponse;
 
@@ -33,6 +35,7 @@ public class BoardApiController {
 
     private final BoardService boardService;
     private final BoardApiService boardApiService;
+    private final AuthUtil authUtil;
 
     @Operation(summary = "Get board list (paging)", description = "페이징된 게시글을 가져온다.")
     @ApiResponses({
@@ -84,7 +87,8 @@ public class BoardApiController {
     })
     @PostMapping("/like/{boardId}")
     public ResponseEntity<ResultResponse> toggleBoardLike(@PathVariable("boardId") long boardId) {
-        boolean isBoardLiked = boardService.likeBoard(boardId);
+        final Member member = authUtil.getLoginMember();
+        boolean isBoardLiked = boardService.likeBoard(member, boardId);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.LIKE_POST_SUCCESS, isBoardLiked));
     }
 

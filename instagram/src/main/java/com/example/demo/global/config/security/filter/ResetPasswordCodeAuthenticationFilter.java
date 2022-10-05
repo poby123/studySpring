@@ -37,9 +37,11 @@ public class ResetPasswordCodeAuthenticationFilter extends AbstractAuthenticatio
 				final LoginWithCodeRequestDto loginWithCodeRequest = objectMapper.readValue(requestBody,
 						LoginWithCodeRequestDto.class);
 
-				final ResetPasswordCodeAuthenticationToken authRequest = ResetPasswordCodeAuthenticationToken.of(
-						loginWithCodeRequest.getUsername(), loginWithCodeRequest.getCode());
+				final ResetPasswordCodeAuthenticationToken authRequest = ResetPasswordCodeAuthenticationToken
+						.of(loginWithCodeRequest.getUsername(), loginWithCodeRequest.getCode());
+
 				return this.getAuthenticationManager().authenticate(authRequest);
+				
 			} catch (IOException e) {
 				throw new AuthenticationServiceException("Authentication failed while converting request body.");
 			}

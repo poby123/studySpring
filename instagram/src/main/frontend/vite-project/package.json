@@ -10,7 +10,7 @@
     "build": "vite build",
     "preview": "vite preview"
   },
-  "proxy": "http://wj-code-server.com:8092",
+  "proxy": "http://wj-code-server.com:8080",
   "dependencies": {
     "axios": "^0.27.2",
     "http-proxy-middleware": "^2.0.6",

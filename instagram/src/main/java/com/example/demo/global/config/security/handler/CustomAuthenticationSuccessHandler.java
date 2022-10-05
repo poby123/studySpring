@@ -55,6 +55,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 		Authentication authentication) throws IOException, ServletException {
 		final JwtDto jwtDto = jwtUtil.generateJwtDto(authentication);
 		final Location location = locationService.getLocation(RequestExtractor.getClientIP(request));
+		
 		refreshTokenService.addRefreshToken(Long.valueOf(authentication.getName()), jwtDto.getRefreshToken(),
 			RequestExtractor.getDevice(request), location);
 

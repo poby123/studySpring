@@ -5,13 +5,11 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.api.service.BoardApiService;
@@ -21,6 +19,7 @@ import com.example.demo.domain.board.service.BoardService;
 import com.example.demo.domain.board.service.S3Service;
 import com.example.demo.domain.member.entity.Member;
 import com.example.demo.domain.member.repositoy.MemberRepository;
+import com.example.demo.global.config.security.util.AuthUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -32,6 +31,7 @@ public class BoardController {
     private final MemberRepository memberRepository;
     private final BoardService boardService;
     private final BoardApiService boardApiService;
+    private final AuthUtil authUtil;
 
     @GetMapping("/")
     public String getBoards(Model model, @RequestParam(defaultValue = "10", required = false) int size,
@@ -55,7 +55,8 @@ public class BoardController {
 
     @GetMapping("/like/{boardId}")
     public String boardLike(@PathVariable(name = "boardId") Long id, Model model) {
-        boardService.likeBoard(id);
+        final Member member = authUtil.getLoginMember();
+        boardService.likeBoard(member, id);
 
         return "redirect:/";
     }

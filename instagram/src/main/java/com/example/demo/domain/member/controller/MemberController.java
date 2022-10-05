@@ -1,24 +1,14 @@
 package com.example.demo.domain.member.controller;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.validation.Valid;
-
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.ui.Model;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 
 import com.example.demo.domain.board.service.S3Service;
-import com.example.demo.domain.member.dto.MemberDto.LoginRequest;
+import com.example.demo.domain.member.dto.LoginRequestDto;
 import com.example.demo.domain.member.dto.RegisterRequestDto;
 import com.example.demo.domain.member.entity.Member;
-import com.example.demo.domain.member.service.CustomUserDetailsService;
 import com.example.demo.domain.member.service.MemberService;
 
 import lombok.RequiredArgsConstructor;
@@ -31,7 +21,7 @@ public class MemberController {
 
     @GetMapping("/login")
     public String loginForm(Model model) {
-        model.addAttribute("member", new LoginRequest());
+        model.addAttribute("member", new LoginRequestDto());
         return "member/login";
     }
 

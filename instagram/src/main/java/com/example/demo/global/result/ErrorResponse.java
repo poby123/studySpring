@@ -36,12 +36,14 @@ public class ErrorResponse {
 		this.status = code.getStatus();
 		this.errors = errors;
 		this.code = code.getCode();
+		this.data = code;
 	}
 
 	private ErrorResponse(final ErrorCode code) {
 		this.message = code.getMessage();
 		this.status = code.getStatus();
 		this.code = code.getCode();
+		this.data = code;
 		this.errors = new ArrayList<>();
 	}
 

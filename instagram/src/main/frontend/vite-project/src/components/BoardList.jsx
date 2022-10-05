@@ -1,48 +1,44 @@
-import { useEffect, useState } from 'react';
 import axios from 'axios';
-import Board from './Board';
-import ImageCarousel from './ImageCarousel';
-import BoardHeader from './BoardHeader';
+import { useEffect, useState } from 'react';
+import { handleAuthenticationException } from "../states/behaviors/AuthBehavior";
+import loginStateInstance from "../states/LoginState";
 import BoardContent from './BoardContent';
+import BoardHeader from './BoardHeader';
+import ImageCarousel from './ImageCarousel';
 
-export default function BoardList(props) {
+export default function BoardList({ authUtils }) {
     const [boards, setBoards] = useState();
+    const { authState, setLogined, setLogout } = authUtils;
 
     useEffect(() => {
         console.log('fetching...');
-        axios.get('/api/boards')
+        axios.get('/api/boards', { headers: { 'Authorization': 'Bearer ' + loginStateInstance.getToken() }, baseURL: 'http://wj-code-server.com:8080/' })
             .then(response => {
-                console.log('response data : ', response.data.data.content);
                 setBoards(response.data.data.content)
-                // console.log('boards : ', boards);
             })
-            .catch(error => console.log(error))
-    }, []);
+            .catch(error => handleAuthenticationException(error, setLogined, setLogout))
+    }, [authState]);
 
     useEffect(() => {
         handleScrollPosition();
     }, [boards])
 
     const handleScrollPosition = () => {
-        console.log('set scorll position : ', scroll);
         const scrollPosition = sessionStorage.getItem("scrollPosition");
         if (scrollPosition) {
-            window.scrollTo({left: 0, top: parseInt(scrollPosition), "behavior": 'instant'});
+            window.scrollTo({ left: 0, top: parseInt(scrollPosition), "behavior": 'instant' });
         }
     };
 
     const handleClick = e => {
-        console.log('save positon');
         sessionStorage.setItem("scrollPosition", window.pageYOffset);
     };
-
-    // const boardItems = boards;
 
     const boardItems = boards && boards.map((board) => {
         return <article className="col card gy-3" key={board.id}>
             <div className="card-body p-2">
                 <BoardHeader board={board} />
-                <ImageCarousel board={board} onClickLink={handleClick}/>
+                <ImageCarousel board={board} onClickLink={handleClick} />
                 <BoardContent board={board} />
             </div>
         </article>

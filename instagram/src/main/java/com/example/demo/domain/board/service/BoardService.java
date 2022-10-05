@@ -65,9 +65,8 @@ public class BoardService {
     }
 
     @Transactional
-    public boolean likeBoard(Long boardId) {
+    public boolean likeBoard(Member member, Long boardId) {
         Board board = boardRepository.findById(boardId).orElseThrow(BoardNotFoundException::new);
-        Member member = memberRepository.findByUsername("poby123").orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
         List<BoardLike> like = boardLikeRepository.findByMemberAndBoard(member, board);
 
         if(like.isEmpty()){

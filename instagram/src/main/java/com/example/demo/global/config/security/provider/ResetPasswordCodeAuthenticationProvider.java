@@ -65,7 +65,7 @@ public class ResetPasswordCodeAuthenticationProvider extends AbstractUserDetails
 	}
 
 	protected Authentication createSuccessAuthentication(Object principal, Authentication authentication,
-		UserDetails user) {
+			UserDetails user) {
 		this.deleteResetPasswordCode(authentication);
 		return super.createSuccessAuthentication(principal, authentication, user);
 	}

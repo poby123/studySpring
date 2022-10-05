@@ -13,7 +13,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import com.example.demo.domain.member.dto.MemberDto.LoginRequest;
+import com.example.demo.domain.member.dto.LoginRequestDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class CustomUsernamePasswordAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
@@ -26,17 +26,17 @@ public class CustomUsernamePasswordAuthenticationFilter extends AbstractAuthenti
 	}
 
 	@Override
-	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws
-		AuthenticationException {
+	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
+			throws AuthenticationException {
 		if (!request.getMethod().equals("POST")) {
 			throw new AuthenticationServiceException("Authentication method not supported: " + request.getMethod());
 		} else {
 			try {
 				final String requestBody = IOUtils.toString(request.getReader());
-				final LoginRequest loginRequest = objectMapper.readValue(requestBody, LoginRequest.class);
+				final LoginRequestDto loginRequest = objectMapper.readValue(requestBody, LoginRequestDto.class);
 
 				final UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(
-					loginRequest.getUsername(), loginRequest.getPassword());
+						loginRequest.getUsername(), loginRequest.getPassword());
 				return this.getAuthenticationManager().authenticate(authRequest);
 			} catch (IOException e) {
 				throw new AuthenticationServiceException("Authentication failed while converting request body.");

@@ -32,8 +32,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.domain.member.dto.JwtDto;
 import com.example.demo.domain.member.dto.JwtResponseDto;
+import com.example.demo.domain.member.dto.LoginRequestDto;
 import com.example.demo.domain.member.dto.LoginWithCodeRequestDto;
-import com.example.demo.domain.member.dto.MemberDto.LoginRequest;
 import com.example.demo.domain.member.dto.RegisterRequestDto;
 import com.example.demo.domain.member.dto.ResetPasswordRequest;
 import com.example.demo.domain.member.dto.SendConfirmationEmailRequestDto;
@@ -129,7 +129,7 @@ public class MemberAuthController {
 		@ApiResponse(code = 401, message = "M005 - 계정 정보가 일치하지 않습니다.")
 	})
 	@PostMapping(value = "/login")
-	public ResponseEntity<ResultResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
+	public ResponseEntity<ResultResponse> login(@Valid @RequestBody LoginRequestDto loginRequest) {
 		throw new FilterMustRespondException();
 	}
 
