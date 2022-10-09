@@ -1,9 +1,9 @@
 import axios from "axios";
 import { LoginDto } from "../dtos/AuthDto";
-import loginStateInstance from "../LoginState";
+import { baseURL, requestHeader } from "../constants/requestConstants";
 
+export const handleAuthenticationException = async (error, authUtils) => {
 
-export const handleAuthenticationException = (error, setLogined, setLogout) => {
     if (!error.response || !error.response.data) {
         return null;
     }
@@ -14,7 +14,7 @@ export const handleAuthenticationException = (error, setLogined, setLogout) => {
             break;
 
         case 'EXPIRED_ACCESS_TOKEN':
-            doReissue(setLogined, setLogout);
+            await doReissue(authUtils);
             console.log('Do reissue!');
             break;
 
@@ -24,37 +24,38 @@ export const handleAuthenticationException = (error, setLogined, setLogout) => {
     }
 }
 
-const doReissue = async (setLogined, setLogout) => {
+const doReissue = async (authUtils) => {
     try {
-        const { data } = await axios.post('/reissue', null, { headers: { 'Authorization': 'Bearer ' + loginStateInstance.getToken() }, baseURL: 'http://wj-code-server.com:8080/', withCredentials: true });
-        setLogined(data.data.accessToken);
+        const response = await axios.post('/reissue', null, { headers: requestHeader(authUtils), baseURL: baseURL, withCredentials: true });
+        (response && response.data) && authUtils.setLogined(response.data.data.accessToken);
     } catch (e) {
-        setLogout();
+        console.log(e);
+        authUtils.setLogout();
     }
 }
 
-export const doLogin = async (username, password, setLogined) => {
+export const doLogin = async (username, password, authUtils) => {
     try {
-        const result = await axios.post('/login', new LoginDto(username, password), { baseURL: 'http://wj-code-server.com:8080/', withCredentials: true });
-
+        const result = await axios.post('/login', new LoginDto(username, password), { baseURL: baseURL, withCredentials: true });
         const { data } = result;
-        setLogined(data.data.accessToken)
+        authUtils.setLogined(data.data.accessToken)
         return true;
     }
     catch (e) {
+        if (e.response.data) {
+            throw new Error(e.response.data.message);
+        }
         throw new Error(e);
-        // handleAuthenticationException(e, setLogined, setLogout);
     }
 }
 
-export const doLogout = async(setLogout) => {
+export const doLogout = async (authUtils) => {
     try {
-        const result = await axios.post('/logout', null, { headers: { 'Authorization': 'Bearer ' + loginStateInstance.getToken() }, baseURL: 'http://wj-code-server.com:8080/', withCredentials: true });
+        const result = await axios.post('/logout', null, { headers: requestHeader(authUtils), baseURL: baseURL, withCredentials: true });
         console.log(result);
-        setLogout();
+        authUtils.setLogout();
     }
     catch (e) {
         throw new Error(e);
-        // handleAuthenticationException(e, setLogined, setLogout);
     }
 } 

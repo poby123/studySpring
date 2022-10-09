@@ -3,6 +3,7 @@ class LoginStates {
     #accessToken;
 
     constructor() {
+        console.log('new instance!');
         if (localStorage.getItem('loginStates') !== null) {
             const loginStates = JSON.parse(localStorage.getItem('loginStates'));
             this.#isLogined = loginStates.isLogined;

@@ -1,27 +1,38 @@
-import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { handleAuthenticationException } from "../states/behaviors/AuthBehavior";
-import loginStateInstance from "../states/LoginState";
+import { handleAuthenticationException } from '../../states/behaviors/AuthBehavior';
+import { doGetBoards } from '../../states/behaviors/BoardBehavior';
+import { useAuthContext } from '../../states/hooks/LoginAuthHook';
+import Loading from '../utils/Loading';
 import BoardContent from './BoardContent';
 import BoardHeader from './BoardHeader';
 import ImageCarousel from './ImageCarousel';
 
-export default function BoardList({ authUtils }) {
+export default function BoardList() {
+    const [isLoading, setLoading] = useState(true);
     const [boards, setBoards] = useState();
-    const { authState, setLogined, setLogout } = authUtils;
+    const authUtils = useAuthContext();
 
     useEffect(() => {
         console.log('fetching...');
-        axios.get('/api/boards', { headers: { 'Authorization': 'Bearer ' + loginStateInstance.getToken() }, baseURL: 'http://wj-code-server.com:8080/' })
-            .then(response => {
-                setBoards(response.data.data.content)
-            })
-            .catch(error => handleAuthenticationException(error, setLogined, setLogout))
-    }, [authState]);
+        setLoading(true);
+
+        (async () => {
+            try {
+                const result = await doGetBoards(authUtils);
+                setLoading(false);
+                setBoards(result.data.data.content);
+            } catch (e) {
+                handleAuthenticationException(e, authUtils);
+            }
+        })();
+
+    }, [authUtils.authState]);
+
 
     useEffect(() => {
         handleScrollPosition();
     }, [boards])
+
 
     const handleScrollPosition = () => {
         const scrollPosition = sessionStorage.getItem("scrollPosition");
@@ -45,10 +56,13 @@ export default function BoardList({ authUtils }) {
     })
 
     return (
-        <section className="border">
-            <div className="container row gx-0 row-cols-1 row-cols-md-2 row-cols-lg-3 mx-auto border">
-                {boardItems}
-            </div>
-        </section>
+        isLoading ?
+            <Loading />
+            :
+            <section className="border">
+                <div className="container row gx-0 row-cols-1 row-cols-md-2 row-cols-lg-3 mx-auto border">
+                    {boardItems}
+                </div>
+            </section>
     )
 }

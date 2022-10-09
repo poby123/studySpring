@@ -1,22 +1,27 @@
-import axios from 'axios';
 import { useState } from "react";
-import loginStateInstance from "../states/LoginState";
+import { handleAuthenticationException } from "../../states/behaviors/AuthBehavior";
+import { doLikeBoard } from '../../states/behaviors/BoardBehavior';
+import { useAuthContext } from '../../states/hooks/LoginAuthHook';
 
 export default function BoardContent({ board }) {
 
     const [currentMemberLike, setCurrentMemberLike] = useState(board.like.currentMemberLike);
     const [numberOfLikes, setNumberOfLikes] = useState(board.like.numberOfLikes);
     const [textTruncated, setTextTruncated] = useState(true);
+    const authUtils = useAuthContext();
 
     const onClickLike = () => {
         currentMemberLike ? setNumberOfLikes(numberOfLikes - 1) : setNumberOfLikes(numberOfLikes + 1);
         setCurrentMemberLike(!currentMemberLike);
 
-        // axios.post(`/api/boards/like/${board.id}`)
-        //     .catch(error => console.error(error))
-
-        axios.post(`/api/boards/like/${board.id}`, null, { headers: { 'Authorization': 'Bearer ' + loginStateInstance.getToken() }, baseURL: 'http://wj-code-server.com:8080/' })
-        .catch(e => console.log(e));
+        (async () => {
+            try {
+                const result = await doLikeBoard(board.id, authUtils);
+                console.log(result);
+            } catch (e) {
+                handleAuthenticationException(e, authUtils);
+            }
+        })
     }
 
     const onClickBoardContent = () => {

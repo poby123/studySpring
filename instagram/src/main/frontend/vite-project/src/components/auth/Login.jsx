@@ -1,23 +1,17 @@
-import { useEffect, useState } from 'react';
-import { Navigate, useNavigate } from "react-router-dom";
-import { doLogin } from '../states/behaviors/AuthBehavior';
+import { useState } from 'react';
+import { Navigate } from "react-router-dom";
+import { doLogin } from '../../states/behaviors/AuthBehavior';
+import { useAuthContext } from '../../states/hooks/LoginAuthHook';
 
-export default function Login({ authUtils }) {
-
-    const navigate = useNavigate();
+export default function Login() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const { authState, setLogined, setLogout, isLogined } = authUtils;
-
-    useEffect(() => {
-        console.log(authState);
-    }, [])
+    const authUtils = useAuthContext();
 
     const onSubmit = async (e) => {
         e.preventDefault();
         try {
-            const result = await doLogin(username, password, setLogined, setLogout);
-            console.log(result);
+            await doLogin(username, password, authUtils);
         } catch (e) {
             console.log(e);
         }
@@ -32,7 +26,7 @@ export default function Login({ authUtils }) {
     }
 
     return (
-        isLogined() ? <Navigate to={'/'} redirect /> :
+        authUtils.isLogined() ? <Navigate to={'/'} redirect /> :
             <section className="login">
                 <div className='container'>
                     <form className="g-3 align-items-center w-100 border" onSubmit={onSubmit}>
